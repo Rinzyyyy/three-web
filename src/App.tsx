@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Suspense, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import "./App.css";
+import Cube from "./components/cube";
+import PlaneHelper from "./components/PlaneHelpe";
+import Sphere from "./components/sphere";
+import DirectLightWithHelper from "./components/DirectLightWithHelper";
 
-function App() {
-  const [count, setCount] = useState(0)
+// import { useGLTF } from '@react-three/drei/native'
+// import modelPath from './path/to/model.glb'
 
+// function Model(props) {
+//   const gltf = useGLTF(modelPath)
+//   return <primitive {...props} object={gltf.scene} />
+// }
+
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Canvas
+      dpr={[1, 2]}
+      gl={{ antialias: true, powerPreference: "high-performance" }}
+      camera={{ position: [15, 15, 15], fov: 50 }}
+      shadows
+    >
+      <Suspense>
+        <ambientLight intensity={0.2} />
+        <axesHelper args={[5]} />
+        <gridHelper />
+        <DirectLightWithHelper position={[0, 10, 5]} />
+        <PlaneHelper />
 
-export default App
+        {/* <spotLight args={[0, 2, 0]} castShadow /> */}
+
+        <Cube />
+        <Sphere />
+      </Suspense>
+    </Canvas>
+  );
+}
