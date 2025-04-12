@@ -1,6 +1,5 @@
 import React from "react";
 import { useFrame } from "@react-three/fiber";
-import { Edges, OrbitControls } from "@react-three/drei";
 import { Object3D, Object3DEventMap } from "three";
 
 const Sphere: React.FC = () => {
@@ -15,7 +14,6 @@ const Sphere: React.FC = () => {
       <sphereGeometry args={[1, 30, 30]} />
       <meshStandardMaterial color="#fff" metalness={0.5} roughness={0} />
       {/* <Edges color="black" /> */}
-      <OrbitControls />
     </mesh>
   );
 };

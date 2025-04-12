@@ -1,14 +1,5 @@
-
 canvas {
   image-rendering: auto;
-  width: 50vw;
-  height: 80vh;
   border-color: azure;
   background-color: rgb(135, 156, 175);
-  margin-top: 100px;
 }
-
-
-
-
-
