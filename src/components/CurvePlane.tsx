@@ -35,7 +35,7 @@ export default function CurvedWall({
 
   return (
     <mesh geometry={geometry} position={[0, 15, -10]}>
-      <meshStandardMaterial color="#000" side={THREE.DoubleSide} />
+      <meshStandardMaterial color="#333" side={THREE.DoubleSide} />
     </mesh>
   );
 }

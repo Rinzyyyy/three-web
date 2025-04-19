@@ -9,19 +9,18 @@ const Cube: React.FC = () => {
   // });
 
   return (
-    <mesh ref={meshRef} position={[0, 1, 10]} receiveShadow >
-      <boxGeometry args={[1, 1, 1]} />
+    <mesh ref={meshRef} position={[0, 1, 10]} receiveShadow>
+      <boxGeometry args={[1, 2, 1]} />
       <meshStandardMaterial
-        color="#ff0000"
+        color="#999"
         transparent={true}
-        opacity={0.8}
+        opacity={1}
         depthWrite={false}
-        metalness={0.3}
-        roughness={0}
+        metalness={1}
+        roughness={1}
+
       />
-    
-      
-      {/* <Edges color="black" /> */}
+      {/* <Edges color="#E5FBFF" /> */}
     </mesh>
   );
 };

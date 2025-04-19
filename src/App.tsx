@@ -1,16 +1,22 @@
-import { Suspense, useEffect } from "react";
+import { RefObject, Suspense, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import "./App.css";
 import Cube from "./components/cube";
 import ThickPlane from "./components/ThickPlane";
-import DirectLightWithHelper from "./components/DirectLightWithHelper";
-import Brain from "./components/Brain";
-import { OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import CurvedWall from "./components/CurvePlane";
 import * as THREE from "three";
 import Plane from "./components/Plane";
+import SkillTree from "./components/SkillTree";
+import { posterize } from "three/tsl";
 
 export default function App() {
+  const controlsRef = useRef(null!);
+  const [cameraPosition, setCameraPosition] = useState<{
+    targetPosition: THREE.Vector3;
+    lookAt: number;
+  } | null>(null);
+
   function Rig() {
     useFrame((state) => {
       const camera = state.camera;
@@ -34,10 +40,14 @@ export default function App() {
       );
 
       // Smoothly move toward target
-      camera.position.lerp(targetPosition, 0.05);
+      camera.position.lerp(
+        cameraPosition?.targetPosition || targetPosition,
+        0.05
+      );
 
       // Look slightly upward (you can tweak this)
-      camera.lookAt(0, 5, 0);
+      const y = cameraPosition?.lookAt || 5;
+      camera.lookAt(0, y, 0);
     });
     return <></>;
   }
@@ -45,28 +55,31 @@ export default function App() {
   return (
     <Canvas
       dpr={[1, 2]}
-      gl={{ antialias: true, powerPreference: "high-performance" }}
+      gl={{
+        antialias: true,
+        powerPreference: "high-performance",
+      }}
       camera={{ position: [0, 20, 90] }}
       shadows
       style={{ width: "100%", height: "100vh" }}
     >
       <Suspense>
-        {/* <Rig />
-        <OrbitControls enableRotate={false} minDistance={15} maxDistance={90} /> */}
-        <OrbitControls />
-        <ambientLight intensity={1.5} />
-        <axesHelper args={[5]} />
-        <gridHelper args={[20]} />
-        <DirectLightWithHelper position={[0, 10, 5]} />
-
-        {/* Ground */}
+        <Rig />
+        {/* <OrbitControls enableRotate={false} minDistance={15} maxDistance={90} /> */}
+        <OrbitControls enabled={!cameraPosition} />
+        {/* <ambientLight intensity={0.2} /> */}
+        {/* <axesHelper args={[5]} />
+        <gridHelper args={[20]} /> */}
+        {/* <DirectLightWithHelper position={[0, 20, 15]} /> */}
+        <Environment preset="sunset" />
+        {/* Ground */}z
         <Plane
           width={30}
           height={100}
           rotate={[-Math.PI / 2, 0, 0]}
           position={[0, 0, 40]}
+          color="#333"
         />
-
         {/* SideWall */}
         <ThickPlane
           width={70}
@@ -78,7 +91,6 @@ export default function App() {
           rotate={[0, -Math.PI / 2, 0]}
           position={[15, 15, 54.75]}
         />
-
         {/* Room */}
         <ThickPlane
           width={10}
@@ -93,24 +105,24 @@ export default function App() {
           opacity={0.8}
         />
         <Plane
-          width={15.5}
+          width={16}
           rotate={[0, -Math.PI / 2, 0]}
           position={[15, 15, 12]}
-          color="#000"
+          color="#333"
         />
         <Plane
-          width={15.5}
+          width={16}
           rotate={[0, -Math.PI / 2, 0]}
           position={[-15, 15, 12]}
-          color="#000"
+          color="#333"
         />
-
         <CurvedWall />
-
-        {/* <spotLight args={[0, 2, 0]} castShadow /> */}
-
+        <SkillTree
+          position={[0, 2.5, 10]}
+          cameraPosition={cameraPosition}
+          setCameraPosition={setCameraPosition}
+        />
         <Cube />
-        <Brain />
       </Suspense>
     </Canvas>
   );

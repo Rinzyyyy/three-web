@@ -16,14 +16,9 @@ const Plane = ({
   color = "#fff",
 }: PlaneHelperProps) => {
   return (
-    <mesh rotation={rotate} receiveShadow position={position}>
+    <mesh rotation={rotate} position={position} receiveShadow>
       <planeGeometry args={[width, height]} />
-      <meshStandardMaterial
-        color={color}
-        // transparent={true}
-        opacity={0.3}
-        side={DoubleSide}
-      />
+      <meshStandardMaterial color={color} side={DoubleSide} />
     </mesh>
   );
 };
