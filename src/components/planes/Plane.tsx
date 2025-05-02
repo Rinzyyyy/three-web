@@ -6,6 +6,11 @@ type PlaneHelperProps = {
   width?: number;
   height?: number;
   color?: string;
+  transparent?: boolean;
+  opacity?: number;
+  metalness?: number;
+  emissive?: string;
+  emissiveIntensity?: number;
 };
 
 const Plane = ({
@@ -14,11 +19,24 @@ const Plane = ({
   width = 10,
   height = 30,
   color = "#fff",
+  transparent,
+  opacity,
+  metalness,
+  emissive,
+  emissiveIntensity,
 }: PlaneHelperProps) => {
   return (
     <mesh rotation={rotate} position={position} receiveShadow>
       <planeGeometry args={[width, height]} />
-      <meshStandardMaterial color={color} side={DoubleSide} />
+      <meshStandardMaterial
+        color={color}
+        side={DoubleSide}
+        transparent={transparent}
+        opacity={opacity}
+        metalness={metalness}
+        emissive={emissive}
+        emissiveIntensity={emissiveIntensity}
+      />
     </mesh>
   );
 };

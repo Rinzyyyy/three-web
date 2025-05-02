@@ -16,7 +16,7 @@ const ThickPlane = ({
   width = 10,
   height = 30,
   thick = 0.5,
-  color = "#fff",
+  color = "#999",
   opacity = 1,
 }: PlaneHelperProps) => {
   return (

@@ -1,21 +1,25 @@
-import { RefObject, Suspense, useRef, useState } from "react";
+import { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import "./App.css";
-import Cube from "./components/cube";
-import ThickPlane from "./components/ThickPlane";
-import { Environment, OrbitControls } from "@react-three/drei";
-import CurvedWall from "./components/CurvePlane";
+import Cube from "./components/geometry/cube";
+import ThickPlane from "./components/planes/ThickPlane";
+import { OrbitControls } from "@react-three/drei";
+import CurvedWall from "./components/planes/CurvePlane";
 import * as THREE from "three";
-import Plane from "./components/Plane";
+import Plane from "./components/planes/Plane";
 import SkillTree from "./components/SkillTree";
-import { posterize } from "three/tsl";
+import { skills } from "./constant/skillData";
+// import { ImagePlane } from "./components/planes/ImagePlane";
+import ArticleScreen from "./components/ArticleScreen";
+import ProjectBoards from "./components/ProjectBoards";
 
 export default function App() {
-  const controlsRef = useRef(null!);
   const [cameraPosition, setCameraPosition] = useState<{
     targetPosition: THREE.Vector3;
-    lookAt: number;
+    lookAt: THREE.Vector3;
   } | null>(null);
+
+  const [selectedSkill, setSelectedSkill] = useState<number | null>(null);
 
   function Rig() {
     useFrame((state) => {
@@ -46,8 +50,9 @@ export default function App() {
       );
 
       // Look slightly upward (you can tweak this)
-      const y = cameraPosition?.lookAt || 5;
-      camera.lookAt(0, y, 0);
+      const lookAtPosition =
+        cameraPosition?.lookAt || new THREE.Vector3(0, 7, 0);
+      camera.lookAt(lookAtPosition);
     });
     return <></>;
   }
@@ -64,46 +69,69 @@ export default function App() {
       style={{ width: "100%", height: "100vh" }}
     >
       <Suspense>
+        {/* <fog attach="fog" args={["#a1a19f", 10, 180]} /> */}
         <Rig />
-        {/* <OrbitControls enableRotate={false} minDistance={15} maxDistance={90} /> */}
-        <OrbitControls enabled={!cameraPosition} />
-        {/* <ambientLight intensity={0.2} /> */}
+        {/* <OrbitControls  enabled={!cameraPosition} enableRotate={false} minDistance={15} maxDistance={90} /> */}
+        <OrbitControls />
+        <ambientLight intensity={1} />
         {/* <axesHelper args={[5]} />
         <gridHelper args={[20]} /> */}
-        {/* <DirectLightWithHelper position={[0, 20, 15]} /> */}
-        <Environment preset="sunset" />
-        {/* Ground */}z
+
+        {/* <Environment preset="sunset" /> */}
+
+        {/* Ground */}
         <Plane
-          width={30}
+          width={60}
           height={100}
           rotate={[-Math.PI / 2, 0, 0]}
           position={[0, 0, 40]}
           color="#333"
         />
+
+        {/* ceil */}
+        {/* <Plane
+          width={60}
+          height={100}
+          rotate={[-Math.PI / 2, 0, 0]}
+          position={[0, 32, 40]}
+          color="#999"
+        /> */}
+
         {/* SideWall */}
         <ThickPlane
           width={70}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[-15, 15, 54.75]}
+          position={[-30, 15, 54.75]}
         />
         <ThickPlane
           width={70}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[15, 15, 54.75]}
+          position={[30, 15, 54.75]}
         />
+
+        {/* project */}
+        <ProjectBoards
+          cameraPosition={cameraPosition}
+          setCameraPosition={setCameraPosition}
+        />
+
+        {/* partition */}
+        <ThickPlane
+          width={21}
+          height={30}
+          rotate={[0, -Math.PI, 0]}
+          position={[-25, 15, 20]}
+          opacity={1}
+        />
+        <ThickPlane
+          width={21}
+          height={30}
+          rotate={[0, Math.PI, 0]}
+          position={[25, 15, 20]}
+          opacity={1}
+        />
+
         {/* Room */}
-        <ThickPlane
-          width={10}
-          rotate={[0, 0, 0]}
-          position={[-10, 15, 20]}
-          opacity={0.8}
-        />
-        <ThickPlane
-          width={10}
-          rotate={[0, 0, 0]}
-          position={[10, 15, 20]}
-          opacity={0.8}
-        />
         <Plane
           width={16}
           rotate={[0, -Math.PI / 2, 0]}
@@ -116,13 +144,28 @@ export default function App() {
           position={[-15, 15, 12]}
           color="#333"
         />
-        <CurvedWall />
+
+        {/* display */}
+        <CurvedWall>
+          {selectedSkill !== null && (
+            <ArticleScreen
+             skillInfo={skills[selectedSkill]}
+              data={skills[selectedSkill].content}
+            />
+          )}
+        </CurvedWall>
+
         <SkillTree
           position={[0, 2.5, 10]}
+          selectedSkill={selectedSkill}
+          setSelectedSkill={setSelectedSkill}
           cameraPosition={cameraPosition}
           setCameraPosition={setCameraPosition}
         />
+
         <Cube />
+
+        {/* <ImagePlane path="/images/react-logo.png" position={[2, 10, 10]} /> */}
       </Suspense>
     </Canvas>
   );
