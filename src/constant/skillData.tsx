@@ -101,8 +101,8 @@ export const skills: Skill[] = [
   {
     name: "Project",
     sPosition: [-5, 2, -2],
-    ballColor: "#f9ebd9",
-    lightColor: "#f9ebd9",
+    ballColor: "#fdfdfc",
+    lightColor: "#f9f9f9",
     titleColor: "",
     rotation: 0,
     content: projectArticle,
@@ -119,7 +119,7 @@ export const skills: Skill[] = [
   {
     name: "Back-End",
     sPosition: [4, 2, -1.5],
-    ballColor: "#f9eff9",
+    ballColor: "#f9e3f9",
     lightColor: "#f2f2f2",
     titleColor: "#fcd306",
     rotation: -1.96,

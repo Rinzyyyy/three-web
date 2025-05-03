@@ -22,7 +22,7 @@ export default function CurvedText({
             position={[x, 0, z]}
             rotation={[0, angle, 0]}
             fontSize={fontSize}
-            fontWeight={600}
+            fontWeight={700}
             anchorX="center"
             anchorY="middle"
             color={color}

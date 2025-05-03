@@ -169,11 +169,11 @@ export default function SkillTree({
               onClick={() => handleClickSkill(i)}
             >
               <meshPhysicalMaterial
-                color={isHovered || isSelected ? ballColor : "#C2C1C1"}
-                metalness={1.2}
+                color={isHovered || isSelected ? "#fff" : "#C2C1C1"}
+                metalness={1}
                 roughness={0}
                 opacity={1}
-                emissive={isHovered || isSelected ? "#f1eaea" : "#585757"}
+                emissive={isHovered || isSelected ? ballColor : "#585757"}
                 emissiveIntensity={0.7}
               />
             </Sphere>

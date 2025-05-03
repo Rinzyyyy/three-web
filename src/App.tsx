@@ -26,39 +26,30 @@ export default function App() {
       const pointer = state.pointer;
       const clock = state.clock;
 
-      const initialPosition = { x: 0, y: 15, z: 15 };
+      const initialPosition = new THREE.Vector3(0, 15, 15);
 
       if (clock.elapsedTime > 5) {
         initialPosition.z = camera.position.z;
       }
 
-      // Calculate offset (with small nudge values)
-      const offsetX = THREE.MathUtils.clamp(pointer.x * 5, -10, 10); // max 10 units in either direction
-      const offsetY = THREE.MathUtils.clamp(pointer.y * 2, 1, 5); // max 2 units up/down
+      // calculate offset (with small nudge values)
+      const offsetX = THREE.MathUtils.clamp(pointer.x * 3, -5, 5);
 
-      const targetPosition = new THREE.Vector3(
-        initialPosition.x + offsetX,
-        initialPosition.y + offsetY,
-        initialPosition.z
-      );
+      const { x, y, z } = cameraPosition?.targetPosition || initialPosition;
 
-      // Smoothly move toward target
-      camera.position.lerp(
-        cameraPosition?.targetPosition || targetPosition,
-        0.05
-      );
+      const targetPosition = new THREE.Vector3(x + offsetX, y, z);
 
-      // Look slightly upward (you can tweak this)
-      const lookAtPosition =
-        cameraPosition?.lookAt || new THREE.Vector3(0, 12, 0);
-      camera.lookAt(lookAtPosition);
+      // smoothly move toward target
+      camera.position.lerp(targetPosition, 0.05);
+
+      camera.lookAt(cameraPosition?.lookAt || new THREE.Vector3(0, 12, 0));
     });
     return <></>;
   }
 
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1]}
       gl={{
         antialias: true,
         powerPreference: "high-performance",
@@ -68,14 +59,9 @@ export default function App() {
       style={{ width: "100%", height: "100vh" }}
     >
       <Suspense>
-        {/* <fog attach="fog" args={["#a1a19f", 10, 180]} /> */}
         <Rig />
-        {/* <OrbitControls  enabled={!cameraPosition} enableRotate={false} minDistance={15} maxDistance={90} /> */}
-        <OrbitControls enableZoom={false} />
+        <OrbitControls enableZoom={false} enableRotate={false} />
         <ambientLight intensity={1} />
-        {/* <axesHelper args={[5]} />
-        <gridHelper args={[20]} /> */}
-
         {/* <Environment preset="sunset" /> */}
 
         {/* Ground */}
@@ -84,7 +70,8 @@ export default function App() {
           height={100}
           rotate={[-Math.PI / 2, 0, 0]}
           position={[0, 0, 40]}
-          color="#a0a09e"
+          color="#dcdccf"
+          texture="concrete01"
         />
 
         {/* ceil */}
@@ -93,21 +80,22 @@ export default function App() {
           height={100}
           rotate={[-Math.PI / 2, 0, 0]}
           position={[0, 60, 40]}
-          color="#222"
+          color="#696868"
+          light
         />
 
         {/* SideWall */}
-        <ThickPlane
-          width={70}
+        <Plane
+          width={80}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[-30, 30, 54.75]}
-          color="#d3eafc"
+          position={[-29, 30, 55]}
+          texture="concrete02"
         />
-        <ThickPlane
-          width={70}
+        <Plane
+          width={80}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[30, 30, 54.75]}
-          color="#d3eafc"
+          position={[29, 30, 55]}
+          texture="concrete02"
         />
 
         {/* project */}
@@ -116,36 +104,20 @@ export default function App() {
           setCameraPosition={setCameraPosition}
         />
 
-        {/* partition */}
+        {/* Pillars */}
         <ThickPlane
-          width={21}
-          height={60}
+          width={10}
           rotate={[0, -Math.PI, 0]}
-          position={[-25, 30, 20]}
-          opacity={1}
-          color="#dbdad1"
+          position={[29, 30, 16]}
+          thick={10}
+          color="#4d4d4d"
         />
         <ThickPlane
-          width={21}
-          height={60}
-          rotate={[0, Math.PI, 0]}
-          position={[25, 30, 20]}
-          opacity={1}
-          color="#dbdad1"
-        />
-
-        {/* Room */}
-        <Plane
-          width={16}
-          rotate={[0, -Math.PI / 2, 0]}
-          position={[15, 30, 12]}
-          color="#333"
-        />
-        <Plane
-          width={16}
-          rotate={[0, -Math.PI / 2, 0]}
-          position={[-15, 30, 12]}
-          color="#333"
+          width={10}
+          rotate={[0, -Math.PI, 0]}
+          position={[-29, 30, 16]}
+          thick={10}
+          color="#4d4d4d"
         />
 
         {/* display */}

@@ -19,6 +19,7 @@ const ThickPlane = ({
   color = "#999",
   opacity = 1,
 }: PlaneHelperProps) => {
+
   return (
     <mesh rotation={rotate} receiveShadow position={position}>
       <boxGeometry args={[width, height, thick]} />

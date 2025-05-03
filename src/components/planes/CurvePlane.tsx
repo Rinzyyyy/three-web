@@ -10,9 +10,9 @@ type CurvedWallProps = {
 };
 
 export default function CurvedWall({
-  width = 48,
+  width = 72,
   height = 60,
-  radius = 15,
+  radius = 25,
   children,
   isDisplay = false,
 }: CurvedWallProps) {
@@ -29,12 +29,8 @@ export default function CurvedWall({
 
       const x = vertex.x;
       const theta = x / radius;
-
       const newX = Math.sin(theta) * radius;
       const newZ = radius - Math.cos(theta) * radius;
-
-      // vertex.x = newX;
-      // vertex.z = newZ;
 
       position.setXYZ(i, newX, vertex.y, newZ);
     }

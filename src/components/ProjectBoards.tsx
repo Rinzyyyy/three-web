@@ -22,7 +22,7 @@ type ProjectBoxProps = {
   >;
 };
 
-const ProjectBox = ({
+const ProjectBoard = ({
   // position,
   cameraPosition,
   setCameraPosition,
@@ -76,6 +76,7 @@ ProjectBoxProps) => {
 
           return (
             <group
+              key={`project_board_${index}`}
               position={position}
               onClick={(e) => {
                 e.stopPropagation();
@@ -87,7 +88,7 @@ ProjectBoxProps) => {
                 {...size}
                 rotate={[0, -Math.PI / 2, 0]}
                 position={[0, 0, 0]}
-                color="#7e4c28"
+                color="#552705"
               />
 
               {/* tag */}
@@ -104,7 +105,7 @@ ProjectBoxProps) => {
                   anchorX="center"
                   anchorY="middle"
                   position={[0, 0, 0.1]}
-                  fontWeight={500}
+                  fontWeight={800}
                   fontStyle="italic"
                 >
                   {title}
@@ -114,9 +115,9 @@ ProjectBoxProps) => {
                   position={[0, 0, 0]}
                   width={tagSize[0]}
                   height={tagSize[1]}
-                  color="#e6e2e2"
-                  emissive="#f7e9d1"
-                  emissiveIntensity={0.5}
+                  color="#fff"
+                  emissive="#fdbb9c"
+                  emissiveIntensity={0.8}
                 />
               </group>
               {selected === null && (
@@ -124,8 +125,8 @@ ProjectBoxProps) => {
               )}
 
               <RectAreaLight
-                color={isSelected ? "#ffd271" : "#f3b808"}
-                intensity={isSelected ? 1.5 : 0.8}
+                color={isSelected ? "#c8f7ee" : "#fff"}
+                intensity={isSelected ? 2 : 0.8}
                 width={30}
                 height={isSelected ? tagSize[0] : width - 0.5}
                 position={[-1, isSelected ? height / 2 + 4 : height / 2, 0]}
@@ -147,6 +148,7 @@ ProjectBoxProps) => {
               {/* gap:1 mt:2.5 */}
               {article.map((sentence, i) => (
                 <Text
+                  key={`project_sentence_${i}`}
                   position={[
                     xPosition,
                     height / 2 - 2.5 - i,
@@ -168,4 +170,4 @@ ProjectBoxProps) => {
   );
 };
 
-export default ProjectBox;
+export default ProjectBoard;
