@@ -90,35 +90,39 @@ export type SkillEnumType = "Front-End" | "Back-End" | "Project";
 export type Skill = {
   name: SkillEnumType;
   sPosition: [number, number, number];
-  color: string;
+  ballColor: string;
   lightColor: string;
+  titleColor: string;
   rotation: number;
   content: ArticleDataInfo;
 };
 
 export const skills: Skill[] = [
   {
+    name: "Project",
+    sPosition: [-5, 2, -2],
+    ballColor: "#f9ebd9",
+    lightColor: "#f9ebd9",
+    titleColor: "",
+    rotation: 0,
+    content: projectArticle,
+  },
+  {
     name: "Front-End",
-    sPosition: [0, 1.2, 1],
-    color: "#BDDADF",
+    sPosition: [0, 2, 3.5],
+    ballColor: "#acd6dd",
     lightColor: "#b3f0fc",
+    titleColor: "#c31f1f",
     rotation: 0,
     content: frontEndArticle,
   },
   {
     name: "Back-End",
-    sPosition: [1.3, 1.3, -0.6],
-    color: "#f9eff9",
-    lightColor: "#b3f0fc",
-    rotation: -2,
+    sPosition: [4, 2, -1.5],
+    ballColor: "#f9eff9",
+    lightColor: "#f2f2f2",
+    titleColor: "#fcd306",
+    rotation: -1.96,
     content: BackEndArticle,
-  },
-  {
-    name: "Project",
-    sPosition: [-1.3, 1.5, -0.6],
-    color: "#f9ebd9",
-    lightColor: "#f9ebd9",
-    rotation: 2,
-    content: projectArticle,
   },
 ];

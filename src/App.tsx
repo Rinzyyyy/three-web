@@ -1,7 +1,6 @@
 import { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import "./App.css";
-import Cube from "./components/geometry/cube";
 import ThickPlane from "./components/planes/ThickPlane";
 import { OrbitControls } from "@react-three/drei";
 import CurvedWall from "./components/planes/CurvePlane";
@@ -27,10 +26,10 @@ export default function App() {
       const pointer = state.pointer;
       const clock = state.clock;
 
-      const basePosition = { x: 0, y: 3, z: 15 };
+      const initialPosition = { x: 0, y: 15, z: 15 };
 
       if (clock.elapsedTime > 5) {
-        basePosition.z = camera.position.z;
+        initialPosition.z = camera.position.z;
       }
 
       // Calculate offset (with small nudge values)
@@ -38,9 +37,9 @@ export default function App() {
       const offsetY = THREE.MathUtils.clamp(pointer.y * 2, 1, 5); // max 2 units up/down
 
       const targetPosition = new THREE.Vector3(
-        basePosition.x + offsetX,
-        basePosition.y + offsetY,
-        basePosition.z
+        initialPosition.x + offsetX,
+        initialPosition.y + offsetY,
+        initialPosition.z
       );
 
       // Smoothly move toward target
@@ -51,7 +50,7 @@ export default function App() {
 
       // Look slightly upward (you can tweak this)
       const lookAtPosition =
-        cameraPosition?.lookAt || new THREE.Vector3(0, 7, 0);
+        cameraPosition?.lookAt || new THREE.Vector3(0, 12, 0);
       camera.lookAt(lookAtPosition);
     });
     return <></>;
@@ -64,7 +63,7 @@ export default function App() {
         antialias: true,
         powerPreference: "high-performance",
       }}
-      camera={{ position: [0, 20, 90] }}
+      camera={{ position: [0, 40, 90] }}
       shadows
       style={{ width: "100%", height: "100vh" }}
     >
@@ -72,7 +71,7 @@ export default function App() {
         {/* <fog attach="fog" args={["#a1a19f", 10, 180]} /> */}
         <Rig />
         {/* <OrbitControls  enabled={!cameraPosition} enableRotate={false} minDistance={15} maxDistance={90} /> */}
-        <OrbitControls />
+        <OrbitControls enableZoom={false} />
         <ambientLight intensity={1} />
         {/* <axesHelper args={[5]} />
         <gridHelper args={[20]} /> */}
@@ -85,28 +84,30 @@ export default function App() {
           height={100}
           rotate={[-Math.PI / 2, 0, 0]}
           position={[0, 0, 40]}
-          color="#333"
+          color="#a0a09e"
         />
 
         {/* ceil */}
-        {/* <Plane
+        <Plane
           width={60}
           height={100}
           rotate={[-Math.PI / 2, 0, 0]}
-          position={[0, 32, 40]}
-          color="#999"
-        /> */}
+          position={[0, 60, 40]}
+          color="#222"
+        />
 
         {/* SideWall */}
         <ThickPlane
           width={70}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[-30, 15, 54.75]}
+          position={[-30, 30, 54.75]}
+          color="#d3eafc"
         />
         <ThickPlane
           width={70}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[30, 15, 54.75]}
+          position={[30, 30, 54.75]}
+          color="#d3eafc"
         />
 
         {/* project */}
@@ -118,52 +119,52 @@ export default function App() {
         {/* partition */}
         <ThickPlane
           width={21}
-          height={30}
+          height={60}
           rotate={[0, -Math.PI, 0]}
-          position={[-25, 15, 20]}
+          position={[-25, 30, 20]}
           opacity={1}
+          color="#dbdad1"
         />
         <ThickPlane
           width={21}
-          height={30}
+          height={60}
           rotate={[0, Math.PI, 0]}
-          position={[25, 15, 20]}
+          position={[25, 30, 20]}
           opacity={1}
+          color="#dbdad1"
         />
 
         {/* Room */}
         <Plane
           width={16}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[15, 15, 12]}
+          position={[15, 30, 12]}
           color="#333"
         />
         <Plane
           width={16}
           rotate={[0, -Math.PI / 2, 0]}
-          position={[-15, 15, 12]}
+          position={[-15, 30, 12]}
           color="#333"
         />
 
         {/* display */}
-        <CurvedWall>
+        <CurvedWall isDisplay={!!selectedSkill}>
           {selectedSkill !== null && (
             <ArticleScreen
-             skillInfo={skills[selectedSkill]}
+              skillInfo={skills[selectedSkill]}
               data={skills[selectedSkill].content}
             />
           )}
         </CurvedWall>
 
         <SkillTree
-          position={[0, 2.5, 10]}
+          position={[0, 10, 7]}
           selectedSkill={selectedSkill}
           setSelectedSkill={setSelectedSkill}
           cameraPosition={cameraPosition}
           setCameraPosition={setCameraPosition}
         />
-
-        <Cube />
 
         {/* <ImagePlane path="/images/react-logo.png" position={[2, 10, 10]} /> */}
       </Suspense>

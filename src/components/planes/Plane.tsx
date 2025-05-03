@@ -17,7 +17,7 @@ const Plane = ({
   rotate,
   position = [0, 0, 0],
   width = 10,
-  height = 30,
+  height = 60,
   color = "#fff",
   transparent,
   opacity,

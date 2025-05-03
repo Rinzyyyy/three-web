@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Sphere, Text, Line } from "@react-three/drei";
+import { Sphere, Line } from "@react-three/drei";
 import * as THREE from "three";
 import Brain from "./Brain";
 import { skills } from "../constant/skillData";
+import CurvedText from "./CurveText";
 
 type SkillTreeProps = {
   position: [x: number, y: number, z: number];
@@ -23,12 +24,11 @@ type SkillTreeProps = {
 
 export default function SkillTree({
   position,
-  cameraPosition,
   setCameraPosition,
   selectedSkill,
   setSelectedSkill,
 }: SkillTreeProps) {
-  const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<THREE.Group>(null!);
   const nodeRefs = useRef<THREE.Group[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
 
@@ -40,19 +40,22 @@ export default function SkillTree({
   function handleClickSkill(index: number) {
     setSelectedSkill((pre) => {
       // click twice  to set back to initial position
-      if (cameraPosition && pre === index) {
-        setCameraPosition(null);
-      } else if (index === 2) {
+      if (pre === index) {
+        setCameraPosition({
+          targetPosition: new THREE.Vector3(0, 15, 15),
+          lookAt: new THREE.Vector3(0, 12, 0),
+        });
+      } else if (index === 0) {
         // when click project node
         setCameraPosition({
-          targetPosition: new THREE.Vector3(0, 18, 98),
-          lookAt: new THREE.Vector3(0, 6, 0),
+          targetPosition: new THREE.Vector3(0, 20, 98),
+          lookAt: new THREE.Vector3(0, 10, 0),
         });
       } else {
         // click to take a look on th screen
         setCameraPosition({
-          targetPosition: new THREE.Vector3(0, 5, 15),
-          lookAt: new THREE.Vector3(0, 7, 0),
+          targetPosition: new THREE.Vector3(0, 8, 20),
+          lookAt: new THREE.Vector3(0, 10, 0),
         });
       }
 
@@ -61,19 +64,46 @@ export default function SkillTree({
     });
   }
 
-  const scale = useRef(0);
-
-  useFrame(({ clock }) => {
+  useFrame(() => {
     if (groupRef.current) {
-      if (scale.current < 1) {
-        scale.current += 0.02;
-        groupRef.current.scale.set(scale.current, scale.current, scale.current);
-      }
-      if (!hovered) {
-        groupRef.current.position.y = Math.sin(clock.elapsedTime) * 0.1 + 2.5;
+      if (selectedSkill === null) {
+        groupRef.current.position.y = THREE.MathUtils.lerp(
+          groupRef.current.position.y,
+          10,
+          0.1
+        );
+        groupRef.current.position.z = THREE.MathUtils.lerp(
+          groupRef.current.position.z,
+          0,
+          0.1
+        );
+      } //select project
+      else if (selectedSkill === 0) {
+        groupRef.current.position.z = THREE.MathUtils.lerp(
+          groupRef.current.position.z,
+          25,
+          0.1
+        );
+        groupRef.current.position.y = THREE.MathUtils.lerp(
+          groupRef.current.position.y,
+          20,
+          0.1
+        );
+      } //select frontend or backend
+      else {
+        groupRef.current.position.y = THREE.MathUtils.lerp(
+          groupRef.current.position.y,
+          3,
+          0.1
+        );
+        groupRef.current.position.z = THREE.MathUtils.lerp(
+          groupRef.current.position.z,
+          9,
+          0.1
+        );
       }
 
-      // when click rotate to focus on
+      // when click, rotate to focus on
       const rotationY = selectedSkill ? skills[selectedSkill].rotation : 0;
 
       //rotate brain
@@ -82,6 +112,12 @@ export default function SkillTree({
         rotationY,
         0.1
       );
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(
+        groupRef.current.rotation.x,
+        -0.2,
+        0.1
+      );
+
       //rotate specific skill node
       nodeRefs.current.forEach((node, i) => {
         if (!node) return;
@@ -94,10 +130,10 @@ export default function SkillTree({
       });
     }
   });
-  const centerPosition = new THREE.Vector3(0, -0.1, 0);
+  const centerPosition = new THREE.Vector3(0, selectedSkill ? -2 : -3, 0);
 
   return (
-    <mesh ref={groupRef} position={position} scale={0} castShadow>
+    <group ref={groupRef} position={position} castShadow>
       {Array.from({ length: skills.length }).map((_, i) => (
         <Line
           key={`line_${i}`}
@@ -108,46 +144,47 @@ export default function SkillTree({
         />
       ))}
 
-      <Brain onClick={handelClickBrain} />
+      <Brain
+        scale={selectedSkill ? 3 : 5}
+        position={centerPosition}
+        onClick={handelClickBrain}
+      />
 
-      {skills.map(({ name, sPosition, color }, i) => (
-        <group
-          position={sPosition}
-          key={`skill_${i}`}
-          ref={(el) => {
-            if (el) nodeRefs.current[i] = el;
-          }}
-        >
-          (
-          <Sphere
-            args={[0.2, 32, 32]}
-            onPointerOver={() => setHovered(name)}
-            onPointerOut={() => setHovered(null)}
-            onClick={() => handleClickSkill(i)}
-            scale={hovered === name || selectedSkill == i ? 1.7 : 1}
+      {skills.map(({ name, sPosition, ballColor }, i) => {
+        const isSelected = selectedSkill === i;
+        const isHovered = hovered === name;
+        return (
+          <group
+            position={sPosition}
+            key={`skill_${i}`}
+            ref={(el) => {
+              if (el) nodeRefs.current[i] = el;
+            }}
           >
-            <meshPhysicalMaterial
-              color={
-                hovered === name || selectedSkill === i ? color : "#C2C1C1"
-              }
-              metalness={1.3}
-              roughness={0.5}
-              opacity={0.9}
-              transparent
+            (
+            <Sphere
+              args={[1, 35, 35]}
+              onPointerOver={() => setHovered(name)}
+              onPointerOut={() => setHovered(null)}
+              onClick={() => handleClickSkill(i)}
+            >
+              <meshPhysicalMaterial
+                color={isHovered || isSelected ? ballColor : "#C2C1C1"}
+                metalness={1.2}
+                roughness={0}
+                opacity={1}
+                emissive={isHovered || isSelected ? "#f1eaea" : "#585757"}
+                emissiveIntensity={0.7}
+              />
+            </Sphere>
+            )
+            <CurvedText
+              text={name}
+              color={isHovered || isSelected ? "#a90909" : "white"}
             />
-          </Sphere>
-          )
-          <Text
-            position={[0, 0.5, 0]}
-            fontSize={0.15}
-            color="white"
-            anchorX="center"
-            anchorY="middle"
-          >
-            {name}
-          </Text>
-        </group>
-      ))}
-    </mesh>
+          </group>
+        );
+      })}
+    </group>
   );
 }

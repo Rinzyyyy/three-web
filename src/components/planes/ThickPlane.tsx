@@ -14,7 +14,7 @@ const ThickPlane = ({
   rotate,
   position = [0, 0, 0],
   width = 10,
-  height = 30,
+  height = 60,
   thick = 0.5,
   color = "#999",
   opacity = 1,

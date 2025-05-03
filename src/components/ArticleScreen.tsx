@@ -1,6 +1,5 @@
 import { ArticleDataInfo, Skill } from "../constant/skillData";
 import { Line, Text } from "@react-three/drei";
-import Plane from "./planes/Plane";
 import RectAreaLight from "./lights/RectAreaLight";
 
 type HtmlArticleProps = {
@@ -9,40 +8,29 @@ type HtmlArticleProps = {
 };
 
 const ArticleScreen = ({
-  skillInfo: { name, lightColor },
+  skillInfo: { name, lightColor, titleColor },
   data: { title, content },
 }: HtmlArticleProps) => {
   return (
-    <group position={[0, 10, 1]} rotation={[0.05, 0, 0]}>
+    <group position={[0, 10, 3]} rotation={[0.05, 0, 0]}>
       <RectAreaLight
         color={lightColor}
-        intensity={10}
-        width={23}
-        height={35}
-        position={[0, 10, 0]}
+        intensity={12}
+        width={30}
+        height={40}
+        position={[0, 40, 0]}
         rotation={[Math.PI / -2, 0, 0]}
       />
 
       {name !== "Project" && (
-        <>
-          <Plane
-            rotate={[0.06, 0, 0]}
-            position={[0, -16, 0]}
-            height={35}
-            width={23}
-            opacity={0.4}
-            color={name === "Back-End" ? "#f9eff9" : "#a1eefd"}
-            transparent
-          />
-          <Line
-            points={[
-              [-10, -2.2, 1],
-              [10, -2.2, 1],
-            ]}
-            color={name === "Back-End" ? "yellow" : "#c00303"}
-            lineWidth={1}
-          />
-        </>
+        <Line
+          points={[
+            [-10, -2.2, 1],
+            [10, -2.2, 1],
+          ]}
+          color={titleColor}
+          lineWidth={1}
+        />
       )}
 
       {/* title */}
@@ -50,7 +38,7 @@ const ArticleScreen = ({
         position={[0, -1.3, 1.3]}
         fontSize={1.5}
         fontWeight={700}
-        color={name === "Back-End" ? "yellow" : "#c00303"}
+        color={titleColor}
         anchorX="center"
         anchorY="middle"
       >

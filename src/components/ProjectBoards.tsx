@@ -40,8 +40,8 @@ ProjectBoxProps) => {
     setSelected((pre) => {
       if (cameraPosition && pre === index) {
         setCameraPosition({
-          targetPosition: new THREE.Vector3(0, 18, 98),
-          lookAt: new THREE.Vector3(0, 6, 0),
+          targetPosition: new THREE.Vector3(0, 20, 98),
+          lookAt: new THREE.Vector3(0, 10, 0),
         });
       } else {
         setCameraPosition({
@@ -124,11 +124,11 @@ ProjectBoxProps) => {
               )}
 
               <RectAreaLight
-                color={isSelected ? "#fae4b3" : "#f9ebd9"}
+                color={isSelected ? "#ffd271" : "#f3b808"}
                 intensity={isSelected ? 1.5 : 0.8}
                 width={30}
                 height={isSelected ? tagSize[0] : width - 0.5}
-                position={[-1, isSelected ? height : height / 2, 0]}
+                position={[-1, isSelected ? height / 2 + 4 : height / 2, 0]}
                 rotation={[-Math.PI / 2, 0, 0]}
               />
 

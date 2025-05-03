@@ -1,22 +1,19 @@
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { useEffect } from "react";
+import { Object3D, Vector3 } from "three";
 
 type BrainProps = {
+  scale: number;
+  position?: Vector3;
   onClick?: () => void;
 };
 
-export default function Brain({ onClick }: BrainProps) {
+export default function Brain({ scale, position, onClick }: BrainProps) {
   const { scene } = useGLTF("/models/brain_3d/brain.gltf");
-  // const meshRef = React.useRef<Object3D<Object3DEventMap>>(null!);
-
-  // useFrame(({ clock }) => {
-  //   meshRef.current.position.y = Math.sin(clock.elapsedTime) * 0.1 ;
-  // });
 
   useEffect(() => {
-    scene.traverse((obj: any) => {
-      if (obj.isMesh) {
+    scene.traverse((obj: Object3D) => {
+      if (obj) {
         obj.castShadow = true;
         obj.receiveShadow = false;
       }
@@ -24,8 +21,8 @@ export default function Brain({ onClick }: BrainProps) {
   }, [scene]);
 
   return (
-    <mesh castShadow onClick={onClick}>
-      <primitive object={scene} />
+    <mesh castShadow onClick={onClick} position={position}>
+      <primitive object={scene} scale={scale} />
     </mesh>
   );
 }
