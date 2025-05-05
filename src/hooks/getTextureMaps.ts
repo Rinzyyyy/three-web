@@ -1,14 +1,13 @@
 import { useTexture } from "@react-three/drei";
 
-export function useGenerateTextureMaps(texture?: string) {
+export function useGenerateTextureMaps(texture?: string, type?: "jpg" | "png") {
   try {
-    const [colorMap, displacementMap, normalMap, roughnessMap] = useTexture(
+    const [colorMap, normalMap, roughnessMap] = useTexture(
       texture
         ? [
-            `/texture/${texture}/color.jpg`,
-            `/texture/${texture}/displacement.jpg`,
-            `/texture/${texture}/normalGL.jpg`,
-            `/texture/${texture}/roughness.jpg`,
+            `/texture/${texture}/color.${type || "jpg"}`,
+            `/texture/${texture}/normalGL.${type || "jpg"}`,
+            `/texture/${texture}/roughness.${type || "jpg"}`,
           ]
         : []
     );
@@ -20,12 +19,12 @@ export function useGenerateTextureMaps(texture?: string) {
           map: colorMap,
           normalMap: normalMap,
           roughnessMap: roughnessMap,
-          displacementMap: displacementMap,
         }
       : {};
 
     return { textureMaps };
-  } catch {
+  } catch (e) {
+    console.log("===e", e);
     return {};
   }
 }

@@ -2,7 +2,7 @@ import { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import "./App.css";
 import ThickPlane from "./components/planes/ThickPlane";
-import { OrbitControls } from "@react-three/drei";
+import { Environment, Html, OrbitControls } from "@react-three/drei";
 import CurvedWall from "./components/planes/CurvePlane";
 import * as THREE from "three";
 import Plane from "./components/planes/Plane";
@@ -11,38 +11,33 @@ import { skills } from "./constant/skillData";
 // import { ImagePlane } from "./components/planes/ImagePlane";
 import ArticleScreen from "./components/ArticleScreen";
 import ProjectBoards from "./components/ProjectBoards";
+import LoadingAnimation from "./components/LoadingAnimation";
 
 export default function App() {
+  const [loadingFinished, setLoadingFinished] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<number | null>(null);
   const [cameraPosition, setCameraPosition] = useState<{
     targetPosition: THREE.Vector3;
     lookAt: THREE.Vector3;
   } | null>(null);
 
-  const [selectedSkill, setSelectedSkill] = useState<number | null>(null);
-
   function Rig() {
+    const initialPosition = new THREE.Vector3(0, 15, 15);
+    const initialLookAt = new THREE.Vector3(0, 12, 0);
+
     useFrame((state) => {
       const camera = state.camera;
       const pointer = state.pointer;
       const clock = state.clock;
 
-      const initialPosition = new THREE.Vector3(0, 15, 15);
-
       if (clock.elapsedTime > 5) {
-        initialPosition.z = camera.position.z;
+        // calculate offset (with small nudge values)
+        const offsetX = THREE.MathUtils.clamp(pointer.x * 2, -3, 3);
+        const { x, y, z } = cameraPosition?.targetPosition || initialPosition;
+        // smoothly move toward target
+        camera.position.lerp({ x: x + offsetX, y, z }, 0.05);
+        camera.lookAt(cameraPosition?.lookAt || initialLookAt);
       }
-
-      // calculate offset (with small nudge values)
-      const offsetX = THREE.MathUtils.clamp(pointer.x * 3, -5, 5);
-
-      const { x, y, z } = cameraPosition?.targetPosition || initialPosition;
-
-      const targetPosition = new THREE.Vector3(x + offsetX, y, z);
-
-      // smoothly move toward target
-      camera.position.lerp(targetPosition, 0.05);
-
-      camera.lookAt(cameraPosition?.lookAt || new THREE.Vector3(0, 12, 0));
     });
     return <></>;
   }
@@ -58,87 +53,102 @@ export default function App() {
       shadows
       style={{ width: "100%", height: "100vh" }}
     >
-      <Suspense>
-        <Rig />
-        <OrbitControls enableZoom={false} enableRotate={false} />
-        <ambientLight intensity={1} />
-        {/* <Environment preset="sunset" /> */}
+      <OrbitControls />
+      <ambientLight intensity={1} />
+      {/* <Environment preset="sunset" /> */}
 
-        {/* Ground */}
-        <Plane
-          width={60}
-          height={100}
-          rotate={[-Math.PI / 2, 0, 0]}
-          position={[0, 0, 40]}
-          color="#dcdccf"
-          texture="concrete01"
-        />
+      <Suspense
+        fallback={
+          <Html prepend fullscreen>
+            <LoadingAnimation isInSuspense />
+          </Html>
+        }
+      >
+        <Html prepend fullscreen visible={!loadingFinished}>
+          <LoadingAnimation onFinish={() => setLoadingFinished(true)} />
+        </Html>
 
-        {/* ceil */}
-        <Plane
-          width={60}
-          height={100}
-          rotate={[-Math.PI / 2, 0, 0]}
-          position={[0, 60, 40]}
-          color="#696868"
-          light
-        />
+        <group visible={loadingFinished}>
+          <Rig />
+          {/* Ground */}
+          <Plane
+            width={60}
+            height={100}
+            rotate={[-Math.PI / 2, 0, 0]}
+            position={[0, 0, 40]}
+            color="#dcdccf"
+            texture="concrete01"
+          />
 
-        {/* SideWall */}
-        <Plane
-          width={80}
-          rotate={[0, -Math.PI / 2, 0]}
-          position={[-29, 30, 55]}
-          texture="concrete02"
-        />
-        <Plane
-          width={80}
-          rotate={[0, -Math.PI / 2, 0]}
-          position={[29, 30, 55]}
-          texture="concrete02"
-        />
+          {/* ceil */}
+          <Plane
+            width={60}
+            height={100}
+            rotate={[-Math.PI / 2, 0, 0]}
+            position={[0, 90, 40]}
+            color="#fefcfc"
+            light
+          />
 
-        {/* project */}
-        <ProjectBoards
-          cameraPosition={cameraPosition}
-          setCameraPosition={setCameraPosition}
-        />
+          {/* SideWall */}
+          <Plane
+            width={80}
+            rotate={[0, -Math.PI / 2, 0]}
+            position={[-29, 45, 55]}
+            texture="concrete02"
+          />
+          <Plane
+            width={80}
+            rotate={[0, -Math.PI / 2, 0]}
+            position={[29, 45, 55]}
+            texture="concrete02"
+          />
 
-        {/* Pillars */}
-        <ThickPlane
-          width={10}
-          rotate={[0, -Math.PI, 0]}
-          position={[29, 30, 16]}
-          thick={10}
-          color="#4d4d4d"
-        />
-        <ThickPlane
-          width={10}
-          rotate={[0, -Math.PI, 0]}
-          position={[-29, 30, 16]}
-          thick={10}
-          color="#4d4d4d"
-        />
+          {/* project */}
+          <ProjectBoards
+            cameraPosition={cameraPosition}
+            setCameraPosition={setCameraPosition}
+          />
 
-        {/* display */}
-        <CurvedWall isDisplay={!!selectedSkill}>
-          {selectedSkill !== null && (
+          {/* Pillars */}
+          <ThickPlane
+            width={6}
+            rotate={[0, -Math.PI, 0]}
+            position={[28, 45, 16]}
+            thick={10}
+            color="#d0e3f4"
+            metalness={1}
+            roughness={0.1}
+          />
+          <ThickPlane
+            width={6}
+            rotate={[0, -Math.PI, 0]}
+            position={[-28, 45, 16]}
+            thick={10}
+            color="#d0e3f4"
+            metalness={1}
+            roughness={0.1}
+          />
+
+          {/* display */}
+          <CurvedWall isDisplay={!!selectedSkill}>
             <ArticleScreen
-              skillInfo={skills[selectedSkill]}
-              data={skills[selectedSkill].content}
+              visible={selectedSkill !== null}
+              skillInfo={selectedSkill ? skills[selectedSkill] : undefined}
+              data={selectedSkill ? skills[selectedSkill].content : undefined}
             />
-          )}
-        </CurvedWall>
+          </CurvedWall>
 
-        <SkillTree
-          position={[0, 10, 7]}
-          selectedSkill={selectedSkill}
-          setSelectedSkill={setSelectedSkill}
-          cameraPosition={cameraPosition}
-          setCameraPosition={setCameraPosition}
-        />
+          <SkillTree
+            position={[0, 10, 7]}
+            selectedSkill={selectedSkill}
+            setSelectedSkill={setSelectedSkill}
+            cameraPosition={cameraPosition}
+            setCameraPosition={setCameraPosition}
+          />
 
-        {/* <ImagePlane path="/images/react-logo.png" position={[2, 10, 10]} /> */}
+          {/* <ImagePlane path="/images/react-logo.png" position={[2, 10, 10]} /> */}
+        </group>
       </Suspense>
     </Canvas>
   );

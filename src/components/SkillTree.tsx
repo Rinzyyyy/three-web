@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Sphere, Line } from "@react-three/drei";
+import { Sphere, Line, CubeCamera } from "@react-three/drei";
 import * as THREE from "three";
 import Brain from "./Brain";
 import { skills } from "../constant/skillData";
 import CurvedText from "./CurveText";
+import { useTransition } from "react";
 
 type SkillTreeProps = {
   position: [x: number, y: number, z: number];
@@ -30,6 +31,8 @@ export default function SkillTree({
 }: SkillTreeProps) {
   const groupRef = useRef<THREE.Group>(null!);
   const nodeRefs = useRef<THREE.Group[]>([]);
+
+  const [, startTransition] = useTransition();
   const [hovered, setHovered] = useState<string | null>(null);
 
   function handelClickBrain() {
@@ -54,8 +57,8 @@ export default function SkillTree({
       } else {
         // click to take a look on th screen
         setCameraPosition({
-          targetPosition: new THREE.Vector3(0, 8, 20),
-          lookAt: new THREE.Vector3(0, 10, 0),
+          targetPosition: new THREE.Vector3(0, 9, 20),
+          lookAt: new THREE.Vector3(0, 11, 0),
         });
       }
 
@@ -162,21 +165,30 @@ export default function SkillTree({
             }}
           >
             (
-            <Sphere
-              args={[1, 35, 35]}
-              onPointerOver={() => setHovered(name)}
-              onPointerOut={() => setHovered(null)}
-              onClick={() => handleClickSkill(i)}
-            >
-              <meshPhysicalMaterial
-                color={isHovered || isSelected ? "#fff" : "#C2C1C1"}
-                metalness={1}
-                roughness={0}
-                opacity={1}
-                emissive={isHovered || isSelected ? ballColor : "#585757"}
-                emissiveIntensity={0.7}
-              />
-            </Sphere>
+            <CubeCamera resolution={256} frames={1}>
+              {(texture) => (
+                <Sphere
+                  args={[1, 35, 35]}
+                  onPointerOver={() => {
+                    startTransition(() => setHovered(name));
+                  }}
+                  onPointerOut={() => {
+                    startTransition(() => setHovered(null));
+                  }}
+                  onClick={() => handleClickSkill(i)}
+                >
+                  <meshPhysicalMaterial
+                    envMap={texture}
+                    color={isHovered || isSelected ? "#fff" : "#C2C1C1"}
+                    metalness={1}
+                    roughness={0.2}
+                    opacity={1}
+                    emissive={isHovered || isSelected ? ballColor : "#585757"}
+                    emissiveIntensity={0.7}
+                  />
+                </Sphere>
+              )}
+            </CubeCamera>
             )
             <CurvedText
               text={name}

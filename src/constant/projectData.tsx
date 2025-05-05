@@ -26,7 +26,7 @@ export const projectArticleList: {
       "• Real-Time Chat (Socket.io + Supabase Realtime)",
     ],
     position: new THREE.Vector3(27.5, 25, 40),
-    size: { width: 23, height: 9, thick: 1 },
+    size: { width: 25, height: 9, thick: 1 },
     tagPosition: new THREE.Vector3(-15, 7, 20),
     tagSize: [15, 2],
     side: "right",

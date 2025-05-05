@@ -21,7 +21,7 @@ const Plane = ({
   rotate,
   position = [0, 0, 0],
   width = 10,
-  height = 60,
+  height = 90,
   color = "#fff",
   transparent,
   opacity,
@@ -38,7 +38,7 @@ const Plane = ({
       {light && (
         <RectAreaLight
           color={"#d9d3bf"}
-          intensity={1}
+          intensity={3}
           width={width}
           height={height}
           position={[0, 0, 0]}
