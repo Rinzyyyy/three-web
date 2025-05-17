@@ -2,7 +2,7 @@ import { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import "./App.css";
 import ThickPlane from "./components/planes/ThickPlane";
-import { Environment, Html, OrbitControls } from "@react-three/drei";
+import {  Html, OrbitControls } from "@react-three/drei";
 import CurvedWall from "./components/planes/CurvePlane";
 import * as THREE from "three";
 import Plane from "./components/planes/Plane";
@@ -54,8 +54,7 @@ export default function App() {
       style={{ width: "100%", height: "100vh" }}
     >
       <OrbitControls enableZoom={false} />
-      <ambientLight intensity={1} />
-      {/* <Environment preset="sunset" /> */}
+      <ambientLight intensity={0.5} />
 
       <Suspense
         fallback={

@@ -9,7 +9,7 @@ type HtmlArticleProps = {
 };
 
 const ArticleScreen = ({ skillInfo, data }: HtmlArticleProps) => {
-  const [mapColor] = useTexture([`/texture/screen/roughness.jpg`]);
+  const [mapColor] = useTexture([`/texture/screen/color3.png`]);
 
   const { name, lightColor, titleColor } = skillInfo || {};
   const { title, content } = data || {};
@@ -33,11 +33,8 @@ const ArticleScreen = ({ skillInfo, data }: HtmlArticleProps) => {
           <Plane
             width={30}
             transparent
-            color="#000"
-            opacity={0.8}
-            // emissive={lightColor}
-            // emissiveIntensity={0.2}
-            // mapColor={mapColor}
+            opacity={0.9}
+            mapColor={mapColor}
           />
           <Line
             points={[

@@ -1,5 +1,5 @@
 import { DoubleSide, Texture, Vector3 } from "three";
-import { useGenerateTextureMaps } from "../../hooks/getTextureMaps";
+import { useGenerateRoughTextureMaps } from "../../hooks/getTextureMaps";
 import RectAreaLight from "../lights/RectAreaLight";
 
 type PlaneHelperProps = {
@@ -14,7 +14,6 @@ type PlaneHelperProps = {
   emissive?: string;
   emissiveIntensity?: number;
   texture?: string;
-  textureType?: "jpg" | "png";
   light?: boolean;
   mapColor?: Texture;
 };
@@ -24,19 +23,18 @@ const Plane = ({
   position = [0, 0, 0],
   width = 10,
   height = 90,
-  color = "#fff",
+  color,
   transparent,
   opacity,
   metalness,
   emissive,
   emissiveIntensity,
   texture,
-  textureType = "jpg",
   light,
   mapColor,
 }: PlaneHelperProps) => {
-  const { textureMaps } = useGenerateTextureMaps(texture, textureType);
-  const texturePops = mapColor ? { map: mapColor } : textureMaps;
+  const { textureMaps } = useGenerateRoughTextureMaps(texture);
+  const textureProps = mapColor ? { map: mapColor } : textureMaps;
   return (
     <mesh rotation={rotate} position={position} receiveShadow>
       {light && (
@@ -58,7 +56,7 @@ const Plane = ({
         metalness={metalness}
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
-        {...texturePops}
+        {...textureProps}
       />
     </mesh>
   );
