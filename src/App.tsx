@@ -53,7 +53,7 @@ export default function App() {
       shadows
       style={{ width: "100%", height: "100vh" }}
     >
-      <OrbitControls />
+      <OrbitControls enableZoom={false} />
       <ambientLight intensity={1} />
       {/* <Environment preset="sunset" /> */}
 
@@ -76,7 +76,7 @@ export default function App() {
             height={100}
             rotate={[-Math.PI / 2, 0, 0]}
             position={[0, 0, 40]}
-            color="#dcdccf"
+            color="#555"
             texture="concrete01"
           />
 
@@ -133,7 +133,6 @@ export default function App() {
           {/* display */}
           <CurvedWall isDisplay={!!selectedSkill}>
             <ArticleScreen
-              visible={selectedSkill !== null}
               skillInfo={selectedSkill ? skills[selectedSkill] : undefined}
               data={selectedSkill ? skills[selectedSkill].content : undefined}
             />

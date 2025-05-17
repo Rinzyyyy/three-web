@@ -16,7 +16,7 @@ export const projectArticleList: {
 }[] = [
   {
     title: "E-commerce Platform",
-    subtitle: "* Next.js + Supabase + useSWR + Tailwind *",
+    subtitle: "* Next.js + Supabase + Tailwind + Deno *",
     article: [
       "• SEO Optimization (Next.js Metadata)",
       "• Authentication & Encryption (JWT authentication, RSA + AES hybrid encryption)",
@@ -25,7 +25,7 @@ export const projectArticleList: {
       "• Dynamic Tree Diagram (React-d3-tree)",
       "• Real-Time Chat (Socket.io + Supabase Realtime)",
     ],
-    position: new THREE.Vector3(27.5, 25, 40),
+    position: new THREE.Vector3(28.9, 25, 40),
     size: { width: 25, height: 9, thick: 1 },
     tagPosition: new THREE.Vector3(-15, 7, 20),
     tagSize: [15, 2],
@@ -42,7 +42,7 @@ export const projectArticleList: {
       "• Frontend display ordering (dnd-kit drag-and-drop sorting)",
       "• Rich Text Editor (React Quill)",
     ],
-    position: new THREE.Vector3(27.5, 25, 70),
+    position: new THREE.Vector3(28.9, 25, 70),
     size: { width: 22, height: 9, thick: 1 },
     tagPosition: new THREE.Vector3(-10, 8, 1),
     tagSize: [12, 2],
@@ -57,7 +57,7 @@ export const projectArticleList: {
       "• Line LIFF Integration-Auto-login (ngrok tunneling)",
     ],
 
-    position: new THREE.Vector3(-29, 29, 30),
+    position: new THREE.Vector3(-28.9, 29, 30),
     size: { width: 14, height: 6, thick: 1 },
     tagPosition: new THREE.Vector3(17, 8, 22),
     tagSize: [10, 2],
@@ -70,7 +70,7 @@ export const projectArticleList: {
       "• Mono-Repo (setup to manage multiple landing page versions)",
       "• sharing components and templates,to improve development efficiency",
     ],
-    position: new THREE.Vector3(-29, 25, 50),
+    position: new THREE.Vector3(-28.9, 25, 50),
     size: { width: 19, height: 6, thick: 1 },
     tagPosition: new THREE.Vector3(9, 6, 8),
     tagSize: [10, 2],
@@ -81,7 +81,7 @@ export const projectArticleList: {
     subtitle: "* Email Marketing *",
     article: ["• HTML + CSS development of EDM email templates"],
     size: { width: 14, height: 4, thick: 1 },
-    position: new THREE.Vector3(-29, 20, 70),
+    position: new THREE.Vector3(-28.9, 20, 70),
     tagPosition: new THREE.Vector3(6, 9, 1),
     tagSize: [5, 2],
     side: "left",

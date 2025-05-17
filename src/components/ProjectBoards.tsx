@@ -83,6 +83,16 @@ ProjectBoxProps) => {
                 handleClickProject(index);
               }}
             >
+              <Plane
+                width={size.width}
+                height={1.5}
+                rotate={[0, -Math.PI / 2, 0]}
+                texture="e-commerce"
+                position={[0, size.height / 2 + 1, 0]}
+                textureType="png"
+                transparent
+              />
+
               {/* board */}
               <ThickPlane
                 {...size}

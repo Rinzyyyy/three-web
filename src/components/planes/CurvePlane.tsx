@@ -72,7 +72,7 @@ export default function CurvedWall({
       <group position={[0, 45, -10]}>
         <mesh ref={groupRef} geometry={geometry} position={[0, 0, 0]}>
           <meshStandardMaterial
-            color={isDisplay ? "#828181" : "#333"}
+            color={isDisplay ? "#767575" : "#333"}
             side={THREE.DoubleSide}
             {...textureMaps}
           />
