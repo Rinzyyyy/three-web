@@ -1,15 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import ThickPlane from "./planes/ThickPlane";
 import { Text, Line } from "@react-three/drei";
 import * as THREE from "three";
 import { projectArticleList } from "../constant/projectData";
 import RectAreaLight from "./lights/RectAreaLight";
 import Plane from "./planes/Plane";
+import IconBar from "./IconBar";
 
 type ProjectBoxProps = {
-  // position: [x: number, y: number, z: number];
-  // selectedSkill: number | null;
-  // setSelectedSkill: Dispatch<SetStateAction<number | null>>;
   cameraPosition: {
     targetPosition: THREE.Vector3;
     lookAt: THREE.Vector3;
@@ -23,12 +21,11 @@ type ProjectBoxProps = {
 };
 
 const ProjectBoard = ({
-  // position,
   cameraPosition,
   setCameraPosition,
-}: // selectedSkill,
-// setSelectedSkill,
-ProjectBoxProps) => {
+}: ProjectBoxProps) => {
+  const [, startTransition] = useTransition();
+  const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
 
   function handleClickProject(index: number) {
@@ -58,19 +55,22 @@ ProjectBoxProps) => {
       {projectArticleList.map(
         (
           {
+            id,
             title,
             subtitle,
             article,
             position,
             tagPosition,
             tagSize,
+            iconBarSize,
             side,
             size,
           },
           index
         ) => {
           const { width, height } = size;
-          const xPosition = side === "right" ? -0.6 : 0.6;
+          const textXPosition = side === "right" ? -0.6 : 0.6;
+          const iconXPosition = side === "right" ? 1.3 : -1.3;
           const yRotate = side === "right" ? -Math.PI / 2 : Math.PI / 2;
           const isSelected = selected === index;
 
@@ -78,24 +78,40 @@ ProjectBoxProps) => {
             <group
               key={`project_board_${index}`}
               position={position}
+              onPointerOver={() => {
+                document.body.style.cursor = "pointer";
+                startTransition(() => setHovered(id));
+              }}
+              onPointerOut={() => {
+                document.body.style.cursor = "default";
+                startTransition(() => setHovered(null));
+              }}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClickProject(index);
               }}
             >
+              <IconBar
+                width={iconBarSize}
+                height={1.5}
+                rotate={[0, yRotate, 0]}
+                texture={id}
+                position={[iconXPosition, size.height / 2 + 1, 0]}
+              />
+
               {/* board */}
               <ThickPlane
                 {...size}
                 rotate={[0, -Math.PI / 2, 0]}
                 position={[0, 0, 0]}
-                color="#552705"
+                color="#421803"
               />
 
               {/* tag */}
               <group
                 position={
                   selected !== null
-                    ? [xPosition, height / 2 + 3, 0]
+                    ? [textXPosition, height / 2 + 3, 0]
                     : tagPosition
                 }
                 rotation={selected !== null ? [0, yRotate, 0] : [0, 0, 0]}
@@ -115,18 +131,17 @@ ProjectBoxProps) => {
                   position={[0, 0, 0]}
                   width={tagSize[0]}
                   height={tagSize[1]}
-                  color="#fff"
-                  emissive="#fdbb9c"
-                  emissiveIntensity={0.8}
+                  color="#f6c191"
+                  emissive={hovered === id ? "#fff" : "#f6c191"}
                 />
               </group>
               {selected === null && (
-                <Line points={[[0, 0, 0], tagPosition]} color="#e6e2e2" />
+                <Line points={[[0, 0, 0], tagPosition]} color="#f6c191" />
               )}
 
               <RectAreaLight
                 color={isSelected ? "#c8f7ee" : "#fff"}
-                intensity={isSelected ? 2 : 0.8}
+                intensity={2}
                 width={30}
                 height={isSelected ? tagSize[0] : width - 0.5}
                 position={[-1, isSelected ? height / 2 + 4 : height / 2, 0]}
@@ -136,7 +151,7 @@ ProjectBoxProps) => {
               {/* subtitle */}
               {/* mt:1 */}
               <Text
-                position={[xPosition, height / 2 - 1, 0]}
+                position={[textXPosition, height / 2 - 1, 0]}
                 rotation={[0, yRotate, 0]}
                 color="#bdf750"
                 fontSize={0.7}
@@ -150,7 +165,7 @@ ProjectBoxProps) => {
                 <Text
                   key={`project_sentence_${i}`}
                   position={[
-                    xPosition,
+                    textXPosition,
                     height / 2 - 2.5 - i,
                     side === "right" ? -width / 2 + 2 : width / 2 - 1,
                   ]}
