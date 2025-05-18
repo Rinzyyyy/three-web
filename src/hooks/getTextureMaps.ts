@@ -1,13 +1,13 @@
 import { useTexture } from "@react-three/drei";
 
-export function useGenerateTextureMaps(texture?: string, type?: "jpg" | "png") {
+export function useGenerateRoughTextureMaps(texture?: string) {
   try {
     const [colorMap, normalMap, roughnessMap] = useTexture(
       texture
         ? [
-            `/texture/${texture}/color.${type || "jpg"}`,
-            `/texture/${texture}/normalGL.${type || "jpg"}`,
-            `/texture/${texture}/roughness.${type || "jpg"}`,
+            `/texture/${texture}/color.jpg`,
+            `/texture/${texture}/normalGL.jpg`,
+            `/texture/${texture}/roughness.jpg`,
           ]
         : []
     );
@@ -24,7 +24,36 @@ export function useGenerateTextureMaps(texture?: string, type?: "jpg" | "png") {
 
     return { textureMaps };
   } catch (e) {
-    console.log("===e", e);
+    console.warn("===e", e);
+    return {};
+  }
+}
+
+export function useGenerateIconTextureMaps(icon?: string) {
+  try {
+    const [colorMap, normalMap, displacementMap] = useTexture(
+      icon
+        ? [
+            `/texture/${icon}/color.png`,
+            `/texture/${icon}/normalGL.png`,
+            `/texture/${icon}/displacement.png`,
+          ]
+        : []
+    );
+
+    const textureMaps = icon
+      ? {
+          map: colorMap,
+          normalMap: normalMap,
+          displacementMap: displacementMap,
+        }
+      : {};
+
+    console.log("==ic", icon, textureMaps);
+
+    return { textureMaps };
+  } catch (e) {
+    console.warn("===e", e);
     return {};
   }
 }

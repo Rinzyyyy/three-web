@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 type RectAreaLightProps = {
-  color: string;
+  color?: string;
   intensity: number;
   width: number;
   height: number;
@@ -10,7 +10,7 @@ type RectAreaLightProps = {
 };
 
 const RectAreaLight = ({
-  color,
+  color = "#fff",
   intensity,
   width,
   height,

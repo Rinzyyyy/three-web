@@ -14,6 +14,7 @@ export default function LoadingAnimation({
   const overlayRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const { progress, active } = useProgress();
   const isFinished = progress === 100 && !active;
@@ -38,6 +39,9 @@ export default function LoadingAnimation({
         y: -2,
         repeat: 1,
         yoyo: true,
+      })
+      .to(textRef.current, {
+        opacity: 0,
       })
       .to(containerRef.current, {
         backgroundImage:
@@ -105,6 +109,7 @@ export default function LoadingAnimation({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
         }}
       >
         <img
@@ -113,6 +118,18 @@ export default function LoadingAnimation({
           alt="loading"
           style={{ opacity: 0.5 }}
         />
+        <p
+          ref={textRef}
+          style={{
+            position: "absolute",
+            color: "#860404",
+            letterSpacing: 2,
+            fontSize: "20px",
+            fontWeight: 500,
+          }}
+        >
+          Loading ...
+        </p>
       </div>
     </div>
   );

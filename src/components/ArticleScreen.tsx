@@ -1,23 +1,28 @@
 import { ArticleDataInfo, Skill } from "../constant/skillData";
-import { Line, Text } from "@react-three/drei";
+import { Line, Text, useTexture } from "@react-three/drei";
 import RectAreaLight from "./lights/RectAreaLight";
 import Plane from "./planes/Plane";
 
 type HtmlArticleProps = {
   skillInfo?: Skill;
   data?: ArticleDataInfo;
-  visible?: boolean;
 };
 
-const ArticleScreen = ({ skillInfo, data, visible }: HtmlArticleProps) => {
-  if (!skillInfo || !data) return;
+const ArticleScreen = ({ skillInfo, data }: HtmlArticleProps) => {
+  const [mapColor] = useTexture([`/texture/screen/color.png`]);
+
   const { name, lightColor, titleColor } = skillInfo || {};
-  const { title, content } = data;
+  const { title, content } = data || {};
+
   return (
-    <group position={[0, 0, 0.5]} rotation={[0.05, 0, 0]} visible={visible}>
+    <group
+      position={[0, 0, 0.5]}
+      rotation={[0.05, 0, 0]}
+      visible={!!skillInfo && !!data}
+    >
       <RectAreaLight
         color={lightColor}
-        intensity={20}
+        intensity={25}
         width={50}
         height={40}
         position={[0, 60, 0]}
@@ -25,14 +30,7 @@ const ArticleScreen = ({ skillInfo, data, visible }: HtmlArticleProps) => {
       />
       {name !== "Project" && (
         <group>
-          <Plane
-            width={30}
-            transparent
-            opacity={0.95}
-            color="#fff"
-            emissive={lightColor}
-            emissiveIntensity={0.2}
-          />
+          <Plane width={30} transparent opacity={0.9} mapColor={mapColor} />
           <Line
             points={[
               [-10, -2.2, 1],
@@ -54,15 +52,15 @@ const ArticleScreen = ({ skillInfo, data, visible }: HtmlArticleProps) => {
       >
         {title}
       </Text>
-      {content.map(({ subtitle, content, contentTwo, mt }, index) => {
-        const gap = 3.5 + (mt ?? 0);
+      {content?.map(({ subtitle, content, contentTwo, mt }, index) => {
+        const gap = 4 + (mt ?? 0);
         return (
           <>
             <Text
               position={[0, -4 - index * gap, 1]}
               fontSize={0.8}
-              fontWeight={name === "Back-End" ? 700 : 300}
-              color="#222"
+              fontWeight={name === "Back-End" ? 700 : 400}
+              color="#89fcc4"
               anchorX="center"
               anchorY="middle"
             >
@@ -73,7 +71,7 @@ const ArticleScreen = ({ skillInfo, data, visible }: HtmlArticleProps) => {
               position={[0, -5.3 - index * gap, 1]}
               fontSize={0.8}
               fontWeight={name === "Back-End" ? 300 : 700}
-              color="#222"
+              color="#fff"
               anchorX="center"
               anchorY="middle"
             >
@@ -84,7 +82,7 @@ const ArticleScreen = ({ skillInfo, data, visible }: HtmlArticleProps) => {
               position={[0, -6.6 - index * gap, 1]}
               fontSize={0.8}
               fontWeight={name === "Back-End" ? 300 : 700}
-              color="#222"
+              color="#fff"
               anchorX="center"
               anchorY="middle"
             >

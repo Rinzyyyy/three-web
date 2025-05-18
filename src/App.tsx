@@ -2,7 +2,7 @@ import { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import "./App.css";
 import ThickPlane from "./components/planes/ThickPlane";
-import { Environment, Html, OrbitControls } from "@react-three/drei";
+import { Html, OrbitControls } from "@react-three/drei";
 import CurvedWall from "./components/planes/CurvePlane";
 import * as THREE from "three";
 import Plane from "./components/planes/Plane";
@@ -53,9 +53,8 @@ export default function App() {
       shadows
       style={{ width: "100%", height: "100vh" }}
     >
-      <OrbitControls />
-      <ambientLight intensity={1} />
-      {/* <Environment preset="sunset" /> */}
+      <OrbitControls enableZoom={false} enableRotate={false} />
+      <ambientLight intensity={0.3} />
 
       <Suspense
         fallback={
@@ -76,7 +75,7 @@ export default function App() {
             height={100}
             rotate={[-Math.PI / 2, 0, 0]}
             position={[0, 0, 40]}
-            color="#dcdccf"
+            color="#555"
             texture="concrete01"
           />
 
@@ -96,12 +95,14 @@ export default function App() {
             rotate={[0, -Math.PI / 2, 0]}
             position={[-29, 45, 55]}
             texture="concrete02"
+            emissive="#5f5d5d"
           />
           <Plane
             width={80}
             rotate={[0, -Math.PI / 2, 0]}
             position={[29, 45, 55]}
             texture="concrete02"
+            emissive="#5f5d5d"
           />
 
           {/* project */}
@@ -133,7 +134,6 @@ export default function App() {
           {/* display */}
           <CurvedWall isDisplay={!!selectedSkill}>
             <ArticleScreen
-              visible={selectedSkill !== null}
               skillInfo={selectedSkill ? skills[selectedSkill] : undefined}
               data={selectedSkill ? skills[selectedSkill].content : undefined}
             />

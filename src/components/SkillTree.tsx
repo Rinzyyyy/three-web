@@ -6,6 +6,7 @@ import Brain from "./Brain";
 import { skills } from "../constant/skillData";
 import CurvedText from "./CurveText";
 import { useTransition } from "react";
+import SpotLight from "./lights/SpotLight ";
 
 type SkillTreeProps = {
   position: [x: number, y: number, z: number];
@@ -25,6 +26,7 @@ type SkillTreeProps = {
 
 export default function SkillTree({
   position,
+  cameraPosition,
   setCameraPosition,
   selectedSkill,
   setSelectedSkill,
@@ -133,70 +135,95 @@ export default function SkillTree({
       });
     }
   });
+
   const centerPosition = new THREE.Vector3(0, selectedSkill ? -2 : -3, 0);
 
   return (
-    <group ref={groupRef} position={position} castShadow>
-      {Array.from({ length: skills.length }).map((_, i) => (
-        <Line
-          key={`line_${i}`}
-          points={[centerPosition, skills[i].sPosition]}
-          color="#666"
-          lineWidth={1}
-          vertexColors={[new THREE.Color("#FF0000"), new THREE.Color("#fff")]}
+    <>
+      <group ref={groupRef} position={position} castShadow>
+        <SpotLight
+          target={groupRef.current}
+          position={[0, 10, 2]}
+          intensity={500}
+          distance={30}
+          angle={6}
         />
-      ))}
 
-      <Brain
-        scale={selectedSkill ? 3 : 5}
-        position={centerPosition}
-        onClick={handelClickBrain}
-      />
+        {Array.from({ length: skills.length }).map((_, i) => (
+          <Line
+            key={`line_${i}`}
+            points={[centerPosition, skills[i].sPosition]}
+            color="#666"
+            lineWidth={1}
+            vertexColors={[new THREE.Color("#FF0000"), new THREE.Color("#fff")]}
+          />
+        ))}
 
-      {skills.map(({ name, sPosition, ballColor }, i) => {
-        const isSelected = selectedSkill === i;
-        const isHovered = hovered === name;
-        return (
-          <group
-            position={sPosition}
-            key={`skill_${i}`}
-            ref={(el) => {
-              if (el) nodeRefs.current[i] = el;
-            }}
-          >
-            (
-            <CubeCamera resolution={256} frames={1}>
-              {(texture) => (
-                <Sphere
-                  args={[1, 35, 35]}
-                  onPointerOver={() => {
-                    startTransition(() => setHovered(name));
-                  }}
-                  onPointerOut={() => {
-                    startTransition(() => setHovered(null));
-                  }}
-                  onClick={() => handleClickSkill(i)}
-                >
-                  <meshPhysicalMaterial
-                    envMap={texture}
-                    color={isHovered || isSelected ? "#fff" : "#C2C1C1"}
-                    metalness={1}
-                    roughness={0.2}
-                    opacity={1}
-                    emissive={isHovered || isSelected ? ballColor : "#585757"}
-                    emissiveIntensity={0.7}
-                  />
-                </Sphere>
-              )}
-            </CubeCamera>
-            )
-            <CurvedText
-              text={name}
-              color={isHovered || isSelected ? "#a90909" : "white"}
-            />
-          </group>
-        );
-      })}
-    </group>
+        <Brain
+          scale={selectedSkill ? 3 : 5}
+          position={centerPosition}
+          onClick={handelClickBrain}
+          onPointerOver={() => {
+            const cursor = cameraPosition ? "pointer" : "default";
+            document.body.style.cursor = cursor;
+          }}
+          onPointerOut={() => (document.body.style.cursor = "default")}
+        />
+
+        <Line
+          points={[centerPosition, 0, -20, -3]}
+          lineWidth={2}
+          vertexColors={[
+            new THREE.Color("#7e1919"),
+            new THREE.Color("#353434"),
+          ]}
+        />
+
+        {skills.map(({ name, sPosition, ballColor }, i) => {
+          const isSelected = selectedSkill === i;
+          const isHovered = hovered === name;
+          return (
+            <group
+              position={sPosition}
+              key={`skill_${i}`}
+              ref={(el) => {
+                if (el) nodeRefs.current[i] = el;
+              }}
+            >
+              (
+              <CubeCamera resolution={256} frames={1}>
+                {(texture) => (
+                  <Sphere
+                    args={[1, 35, 35]}
+                    onPointerOver={() => {
+                      startTransition(() => setHovered(name));
+                    }}
+                    onPointerOut={() => {
+                      startTransition(() => setHovered(null));
+                    }}
+                    onClick={() => handleClickSkill(i)}
+                  >
+                    <meshPhysicalMaterial
+                      envMap={texture}
+                      color={isHovered || isSelected ? "#fff" : "#C2C1C1"}
+                      metalness={1}
+                      roughness={0.2}
+                      opacity={1}
+                      emissive={isHovered || isSelected ? ballColor : "#585757"}
+                      emissiveIntensity={0.7}
+                    />
+                  </Sphere>
+                )}
+              </CubeCamera>
+              )
+              <CurvedText
+                text={name}
+                color={isHovered || isSelected ? "#a90909" : "white"}
+              />
+            </group>
+          );
+        })}
+      </group>
+    </>
   );
 }

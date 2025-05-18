@@ -9,7 +9,7 @@ export type ArticleDataInfo = {
 };
 
 const frontEndArticle: ArticleDataInfo = {
-  title: "Front-End Skills",
+  title: "Front-End experience",
   content: [
     {
       subtitle: "React / Next.js",
@@ -18,15 +18,15 @@ const frontEndArticle: ArticleDataInfo = {
     {
       subtitle: "State & Data Management",
       content:
-        "useQuery , useSWR , useSWRInfinite , useContext , Redux Toolkit",
+        "React Query , useSWR , useContext , Redux Toolkit",
     },
     {
       subtitle: "UI Frameworks",
-      content: "Ant Design,  Tailwind CSS, Sass (SCSS) Responsive",
+      content: "Ant Design,  Tailwind CSS, Sass (SCSS)",
     },
     {
       subtitle: "Responsive Design",
-      content: "Next.js userAgent ,  CSS Media Queries, Tailwind",
+      content: "Next.js userAgent , CSS Media Queries, Tailwind",
     },
     {
       subtitle: "Libraries",
@@ -37,18 +37,18 @@ const frontEndArticle: ArticleDataInfo = {
     },
     {
       subtitle: "3D Interactive Development",
-      content: "React Three Fibe",
+      content: "React Three Fiber",
       mt: 0.25,
     },
   ],
 };
 
 const BackEndArticle: ArticleDataInfo = {
-  title: "Back-End Skills",
+  title: "Back-End experience",
   content: [
     {
       subtitle: "Authentication & Encryption",
-      content: "JWT with Refresh Token、 RSA + AES hybrid encryption",
+      content: "JWT with Refresh Token , RSA + AES hybrid encryption",
     },
     {
       subtitle: "Supabase",
@@ -56,7 +56,7 @@ const BackEndArticle: ArticleDataInfo = {
         "PostgreSQL , Realtime , RLS (Row Level Security) for permission policies",
     },
     {
-      subtitle: "Drizzle ORM + Deno",
+      subtitle: "Drizzle ORM + Deno Oak",
       content: "Type-safe API development within Supabase Edge Functions,",
       contentTwo: "with flexible database migrations",
     },

@@ -6,9 +6,17 @@ type BrainProps = {
   scale: number;
   position?: Vector3;
   onClick?: () => void;
+  onPointerOver?: () => void;
+  onPointerOut?: () => void;
 };
 
-export default function Brain({ scale, position, onClick }: BrainProps) {
+export default function Brain({
+  scale,
+  position,
+  onClick,
+  onPointerOut,
+  onPointerOver,
+}: BrainProps) {
   const { scene } = useGLTF("/models/brain_3d/brain.gltf");
 
   useEffect(() => {
@@ -21,7 +29,13 @@ export default function Brain({ scale, position, onClick }: BrainProps) {
   }, [scene]);
 
   return (
-    <mesh castShadow onClick={onClick} position={position}>
+    <mesh
+      castShadow
+      onClick={onClick}
+      position={position}
+      onPointerOver={onPointerOver}
+      onPointerOut={onPointerOut}
+    >
       <primitive object={scene} scale={scale} />
     </mesh>
   );
