@@ -5,9 +5,9 @@ export function useGenerateRoughTextureMaps(texture?: string) {
     const [colorMap, normalMap, roughnessMap] = useTexture(
       texture
         ? [
-            `/texture/${texture}/color.jpg`,
-            `/texture/${texture}/normalGL.jpg`,
-            `/texture/${texture}/roughness.jpg`,
+            `${import.meta.env.BASE_URL}/texture/${texture}/color.jpg`,
+            `${import.meta.env.BASE_URL}/texture/${texture}/normalGL.jpg`,
+            `${import.meta.env.BASE_URL}/texture/${texture}/roughness.jpg`,
           ]
         : []
     );
@@ -23,8 +23,7 @@ export function useGenerateRoughTextureMaps(texture?: string) {
       : {};
 
     return { textureMaps };
-  } catch (e) {
-    console.warn("===e", e);
+  } catch {
     return {};
   }
 }
@@ -34,9 +33,9 @@ export function useGenerateIconTextureMaps(icon?: string) {
     const [colorMap, normalMap, displacementMap] = useTexture(
       icon
         ? [
-            `/texture/${icon}/color.png`,
-            `/texture/${icon}/normalGL.png`,
-            `/texture/${icon}/displacement.png`,
+            `${import.meta.env.BASE_URL}/texture/${icon}/color.png`,
+            `${import.meta.env.BASE_URL}/texture/${icon}/normalGL.png`,
+            `${import.meta.env.BASE_URL}/texture/${icon}/displacement.png`,
           ]
         : []
     );
@@ -49,11 +48,8 @@ export function useGenerateIconTextureMaps(icon?: string) {
         }
       : {};
 
-    console.log("==ic", icon, textureMaps);
-
     return { textureMaps };
-  } catch (e) {
-    console.warn("===e", e);
+  } catch {
     return {};
   }
 }

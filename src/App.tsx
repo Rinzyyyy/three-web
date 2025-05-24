@@ -51,10 +51,11 @@ export default function App() {
       }}
       camera={{ position: [0, 40, 90] }}
       shadows
-      style={{ width: "100%", height: "100vh" }}
+      style={{ width: "100vw", height: "100vh", background: "black" }}
     >
+      <color attach="background" args={["#000"]} />
       <OrbitControls enableZoom={false} enableRotate={false} />
-      <ambientLight intensity={0.3} />
+      <ambientLight intensity={0.2} />
 
       <Suspense
         fallback={
@@ -101,7 +102,7 @@ export default function App() {
             width={80}
             rotate={[0, -Math.PI / 2, 0]}
             position={[29, 45, 55]}
-            texture="concrete02"
+            texture="concrete01"
             emissive="#5f5d5d"
           />
 
@@ -146,8 +147,6 @@ export default function App() {
             cameraPosition={cameraPosition}
             setCameraPosition={setCameraPosition}
           />
-
-          {/* <ImagePlane path="/images/react-logo.png" position={[2, 10, 10]} /> */}
         </group>
       </Suspense>
     </Canvas>

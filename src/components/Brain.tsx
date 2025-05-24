@@ -17,7 +17,9 @@ export default function Brain({
   onPointerOut,
   onPointerOver,
 }: BrainProps) {
-  const { scene } = useGLTF("/models/brain_3d/brain.gltf");
+  const { scene } = useGLTF(
+    `${import.meta.env.BASE_URL}/models/brain_3d/brain.gltf`
+  );
 
   useEffect(() => {
     scene.traverse((obj: Object3D) => {
