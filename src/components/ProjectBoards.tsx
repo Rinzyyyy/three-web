@@ -6,6 +6,7 @@ import { projectArticleList } from "../constant/projectData";
 import RectAreaLight from "./lights/RectAreaLight";
 import Plane from "./planes/Plane";
 import IconBar from "./IconBar";
+import { a, useSprings, config } from "@react-spring/three";
 
 type ProjectBoxProps = {
   cameraPosition: {
@@ -24,6 +25,7 @@ const ProjectBoard = ({
   cameraPosition,
   setCameraPosition,
 }: ProjectBoxProps) => {
+
   const [, startTransition] = useTransition();
   const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
@@ -37,7 +39,7 @@ const ProjectBoard = ({
     setSelected((pre) => {
       if (cameraPosition && pre === index) {
         setCameraPosition({
-          targetPosition: new THREE.Vector3(0, 20, 98),
+          targetPosition: new THREE.Vector3(0, 23, 103),
           lookAt: new THREE.Vector3(0, 10, 0),
         });
       } else {
@@ -49,6 +51,22 @@ const ProjectBoard = ({
       return pre === index ? null : index;
     });
   }
+
+  const boardSprings = useSprings(
+    projectArticleList.length,
+    projectArticleList.map(({ id, side, tagPosition, size: { height } }) => {
+      const isHovered = hovered === id;
+      const textXPosition = side === "right" ? -0.6 : 0.6;
+      const yRotate = side === "right" ? -Math.PI / 2 : Math.PI / 2;
+      return {
+        tagPosition:
+          selected !== null ? [textXPosition, height / 2 + 3, 0] : tagPosition,
+        tagRotation: selected !== null ? [0, yRotate, 0] : [0, 0, 0],
+        tagColor: selected === null && isHovered ? "#fff" : "#dc9f50",
+        config: config.slow,
+      };
+    })
+  );
 
   return (
     <>
@@ -72,7 +90,6 @@ const ProjectBoard = ({
           const textXPosition = side === "right" ? -0.6 : 0.6;
           const iconXPosition = side === "right" ? 1.3 : -1.3;
           const yRotate = side === "right" ? -Math.PI / 2 : Math.PI / 2;
-          const isSelected = selected === index;
 
           return (
             <group
@@ -88,7 +105,7 @@ const ProjectBoard = ({
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                handleClickProject(index);
+                startTransition(() => handleClickProject(index));
               }}
             >
               <IconBar
@@ -108,13 +125,21 @@ const ProjectBoard = ({
               />
 
               {/* tag */}
-              <group
+              <a.group
                 position={
-                  selected !== null
-                    ? [textXPosition, height / 2 + 3, 0]
-                    : tagPosition
+                  boardSprings[index].tagPosition as unknown as [
+                    number,
+                    number,
+                    number
+                  ]
                 }
-                rotation={selected !== null ? [0, yRotate, 0] : [0, 0, 0]}
+                rotation={
+                  boardSprings[index].tagRotation as unknown as [
+                    number,
+                    number,
+                    number
+                  ]
+                }
               >
                 <Text
                   color="#031d5e"
@@ -131,21 +156,25 @@ const ProjectBoard = ({
                   position={[0, 0, 0]}
                   width={tagSize[0]}
                   height={tagSize[1]}
-                  color="#f6c191"
-                  emissive={hovered === id ? "#fff" : "#f6c191"}
+                  color="#a1a09f"
+                  emissive={boardSprings[index].tagColor}
                 />
-              </group>
-              {selected === null && (
-                <Line points={[[0, 0, 0], tagPosition]} color="#f6c191" />
-              )}
+              </a.group>
+
+              <Line
+                points={[[0, 0, 0], tagPosition]}
+                color="#f6c191"
+                visible={selected === null}
+              />
 
               <RectAreaLight
-                color={isSelected ? "#c8f7ee" : "#fff"}
+                color={"#d3f55a"}
                 intensity={2}
                 width={30}
-                height={isSelected ? tagSize[0] : width - 0.5}
-                position={[-1, isSelected ? height / 2 + 4 : height / 2, 0]}
+                height={tagSize[0]}
+                position={[-1, height / 2 + 4, 0]}
                 rotation={[-Math.PI / 2, 0, 0]}
+                visible={selected !== null}
               />
 
               {/* subtitle */}

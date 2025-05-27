@@ -1,6 +1,7 @@
 import { DoubleSide, Texture, Vector3 } from "three";
 import { useGenerateRoughTextureMaps } from "../../hooks/getTextureMaps";
 import RectAreaLight from "../lights/RectAreaLight";
+import { a, SpringValue } from "@react-spring/three";
 
 type PlaneHelperProps = {
   rotate?: [x: number, y: number, z: number];
@@ -11,7 +12,7 @@ type PlaneHelperProps = {
   transparent?: boolean;
   opacity?: number;
   metalness?: number;
-  emissive?: string;
+  emissive?: string | SpringValue<string>;
   emissiveIntensity?: number;
   texture?: string;
   light?: boolean;
@@ -39,7 +40,7 @@ const Plane = ({
       {light && (
         <RectAreaLight
           color={"#d9d3bf"}
-          intensity={3}
+          intensity={6}
           width={width}
           height={height}
           position={[0, 0, 0]}
@@ -47,7 +48,7 @@ const Plane = ({
         />
       )}
       <planeGeometry args={[width, height]} />
-      <meshStandardMaterial
+      <a.meshStandardMaterial
         color={color}
         side={DoubleSide}
         transparent={transparent}

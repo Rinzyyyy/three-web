@@ -7,6 +7,7 @@ type RectAreaLightProps = {
   height: number;
   position: number[];
   rotation: number[];
+  visible?: boolean;
 };
 
 const RectAreaLight = ({
@@ -16,12 +17,14 @@ const RectAreaLight = ({
   height,
   position,
   rotation,
+  visible = true,
 }: RectAreaLightProps) => {
   return (
     <primitive
       object={new THREE.RectAreaLight(color, intensity, width, height)}
       position={position}
       rotation={rotation}
+      visible={visible}
     />
   );
 };

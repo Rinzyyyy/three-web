@@ -9,7 +9,7 @@ type HtmlArticleProps = {
 };
 
 const ArticleScreen = ({ skillInfo, data }: HtmlArticleProps) => {
-  const [mapColor] = useTexture([`/texture/screen/color.png`]);
+  const [mapColor] = useTexture([`${import.meta.env.BASE_URL}/texture/screen/color.png`]);
 
   const { name, lightColor, titleColor } = skillInfo || {};
   const { title, content } = data || {};

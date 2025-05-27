@@ -18,7 +18,7 @@ const frontEndArticle: ArticleDataInfo = {
     {
       subtitle: "State & Data Management",
       content:
-        "React Query , useSWR , useContext , Redux Toolkit",
+        "React Query , SWR , useContext , Redux Toolkit",
     },
     {
       subtitle: "UI Frameworks",
@@ -62,8 +62,8 @@ const BackEndArticle: ArticleDataInfo = {
     },
     {
       subtitle: "Redis",
-      content: " Caches request data to reduce redundant database queries",
-      contentTwo: " enhancing performance and reducing latency",
+      content: "Caches request data to reduce redundant database queries",
+      contentTwo: "enhancing performance and reducing latency",
       mt: 0.25,
     },
     {
@@ -75,15 +75,6 @@ const BackEndArticle: ArticleDataInfo = {
   ],
 };
 
-const projectArticle: ArticleDataInfo = {
-  title: "",
-  content: [
-    {
-      subtitle: "",
-      content: "",
-    },
-  ],
-};
 
 export type SkillEnumType = "Front-End" | "Back-End" | "Project";
 
@@ -94,7 +85,7 @@ export type Skill = {
   lightColor: string;
   titleColor: string;
   rotation: number;
-  content: ArticleDataInfo;
+  content?: ArticleDataInfo;
 };
 
 export const skills: Skill[] = [
@@ -104,8 +95,7 @@ export const skills: Skill[] = [
     ballColor: "#fdfdfc",
     lightColor: "#f9f9f9",
     titleColor: "",
-    rotation: 0,
-    content: projectArticle,
+    rotation: 0
   },
   {
     name: "Front-End",

@@ -1,37 +1,46 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { useProgress } from "@react-three/drei";
 
 type LoadingScreenProps = {
   isInSuspense?: boolean;
+  isFinished?: boolean;
   onFinish?: () => void;
 };
 
 export default function LoadingAnimation({
   isInSuspense,
-  onFinish = () => {},
+  isFinished,
+  onFinish,
 }: LoadingScreenProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const { progress, active } = useProgress();
-  const isFinished = progress === 100 && !active;
 
   useEffect(() => {
-    tlRef.current = gsap.timeline({ repeat: isInSuspense ? -1 : 0 });
+    if (isInSuspense) {
+      gsap.to(containerRef.current, {
+        height: "80px",
+        duration: 0.6,
+        ease: "power2.out",
+      });
+    }
 
-    tlRef.current.to(imageRef.current, {
-      filter: "blur(4px)",
-      opacity: 0.3,
-      duration: 0.5,
-      x: 8,
-      repeat: 1,
-      yoyo: true,
-    });
-    tlRef.current
-      .to(imageRef.current, {
+    if (!tlRef.current) {
+      tlRef.current = gsap.timeline({
+        repeat: isInSuspense ? -1 : 0,
+      });
+      tlRef.current.to(imageRef.current, {
+        filter: "blur(4px)",
+        opacity: 0.3,
+        duration: 0.5,
+        x: 8,
+        repeat: 1,
+        yoyo: true,
+      });
+
+      tlRef.current.to(imageRef.current, {
         filter: "blur(1px)",
         opacity: 0.3,
         duration: 0.8,
@@ -39,41 +48,37 @@ export default function LoadingAnimation({
         y: -2,
         repeat: 1,
         yoyo: true,
-      })
-      .to(textRef.current, {
-        opacity: 0,
-      })
-      .to(containerRef.current, {
-        backgroundImage:
-          "radial-gradient( #ffffff 0%, #fff7cccc 20%, #000000 70%, #000000 100%)",
-      })
-      .to(
-        imageRef.current,
-        {
-          filter: "blur(1px)",
-          opacity: 0.2,
-          duration: 0.2,
-          y: 3,
-          repeat: 1,
-          yoyo: true,
-        },
-        "<"
-      )
-      .to(imageRef.current, {
-        opacity: 0.1,
-        scale: 1.01,
-        filter: "blur(1)",
-        x: 0,
-        duration: 0.3,
       });
-
-    if (tlRef.current && isFinished && isInSuspense) {
-      tlRef.current.kill();
-      tlRef.current.current = null;
     }
 
-    if (tlRef.current && !isInSuspense) {
+    if (tlRef.current && !isInSuspense && onFinish) {
       tlRef.current
+        .to(textRef.current, {
+          opacity: 0,
+        })
+        .to(containerRef.current, {
+          backgroundImage:
+            "radial-gradient( #ffffff 0%, #fff7cccc 20%, #000000 70%, #000000 100%)",
+        })
+        .to(
+          imageRef.current,
+          {
+            filter: "blur(1px)",
+            opacity: 0.2,
+            duration: 0.2,
+            y: 3,
+            repeat: 1,
+            yoyo: true,
+          },
+          "<"
+        )
+        .to(imageRef.current, {
+          opacity: 0.1,
+          scale: 1.01,
+          filter: "blur(1)",
+          x: 0,
+          duration: 0.3,
+        })
         .to(containerRef.current, {
           height: "0px",
           duration: 0.1,
@@ -85,7 +90,14 @@ export default function LoadingAnimation({
 
       onFinish();
     }
-  }, [active, isFinished, isInSuspense, onFinish, progress]);
+  }, [isInSuspense, onFinish]);
+
+  useEffect(() => {
+    if (tlRef.current && isFinished && isInSuspense) {
+      tlRef.current.kill();
+      tlRef.current = null;
+    }
+  }, [isFinished, isInSuspense]);
 
   return (
     <div
@@ -104,7 +116,7 @@ export default function LoadingAnimation({
         ref={containerRef}
         style={{
           width: "100%",
-          height: "80px",
+          height: isInSuspense ? "0px" : "80px",
           overflow: "hidden",
           display: "flex",
           justifyContent: "center",
@@ -114,7 +126,7 @@ export default function LoadingAnimation({
       >
         <img
           ref={imageRef}
-          src="/images/loading.png"
+          src={`${import.meta.env.BASE_URL}/images/loading.jpg`}
           alt="loading"
           style={{ opacity: 0.5 }}
         />

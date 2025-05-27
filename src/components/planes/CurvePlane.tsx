@@ -44,8 +44,8 @@ export default function CurvedWall({
   }, [width, height, radius]);
 
   const textureMaps = useTexture({
-    map: "/texture/pattern/color.png",
-    normalMap: "/texture/pattern/normalGL.png",
+    map: `${import.meta.env.BASE_URL}/texture/pattern/color.png`,
+    normalMap: `${import.meta.env.BASE_URL}/texture/pattern/normalGL.png`,
   });
 
   useEffect(() => {

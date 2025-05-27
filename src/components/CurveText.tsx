@@ -1,13 +1,24 @@
+import { SpringValue } from "@react-spring/core";
 import { Text } from "@react-three/drei";
+import { animated } from '@react-spring/three'
+
+
+type CurvedTextProps = {
+  text: string;
+  radius?: number;
+  fontSize?: number;
+  color?: string | SpringValue<string>;
+};
 
 export default function CurvedText({
   text = "Curved Text",
   radius = 1,
   fontSize = 0.3,
   color = "white",
-}) {
+}: CurvedTextProps) {
   const chars = text.split("");
   const angleStep = (Math.PI / chars.length) * 0.5;
+  const AnimatedText = animated(Text)
 
   return (
     <group>
@@ -17,7 +28,7 @@ export default function CurvedText({
         const z = Math.cos(angle) * radius;
 
         return (
-          <Text
+          <AnimatedText
             key={i}
             position={[x, 0, z]}
             rotation={[0, angle, 0]}
@@ -28,7 +39,7 @@ export default function CurvedText({
             color={color}
           >
             {char}
-          </Text>
+          </AnimatedText>
         );
       })}
     </group>
