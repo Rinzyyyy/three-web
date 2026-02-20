@@ -8,7 +8,7 @@ export type ArticleDataInfo = {
   }[];
 };
 
-const frontEndArticle: ArticleDataInfo = {
+export const frontEndArticle: ArticleDataInfo = {
   title: "Front-End experience",
   content: [
     {
@@ -43,7 +43,7 @@ const frontEndArticle: ArticleDataInfo = {
   ],
 };
 
-const BackEndArticle: ArticleDataInfo = {
+export const BackEndArticle: ArticleDataInfo = {
   title: "Back-End experience",
   content: [
     {
