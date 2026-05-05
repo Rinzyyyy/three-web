@@ -27,7 +27,7 @@ const MobileLayout = () => {
     },
     {
       threshold: 0.5,
-    }
+    },
   );
 
   const setSectionRef = useCallback((id: string, node: HTMLElement | null) => {
@@ -110,7 +110,7 @@ const MobileLayout = () => {
                         {letter}
                       </span>
                     );
-                  }
+                  },
                 )}
               </p>
             ))}
@@ -139,17 +139,38 @@ const MobileLayout = () => {
               className="w-[calc(100%-68px)] mr-[68px]"
             />
 
-            <p className="text-sm leading-[200%] mt-5 mb-2 pr-[68px] pl-3">
-              建構模組化架構，設計共用元件，提升開發效率並降低維護成本。
-              並重視使用者與開發者反饋，樂於討論及思考如何優化使用者體驗與開發體驗。
+            <p className="text-base leading-[150%] my-4 pr-[68px] pl-3 font-bold text-[#88e8fb]">
+              # 響應式多國語系前端開發 <br />
+              <span className="text-sm text-[#fff]">
+                React、 Next.js 、TypeScript 、Tailwind 、i18n
+              </span>
             </p>
 
+            <p className="text-base leading-[150%] my-4 pr-[68px] pl-3 font-bold text-[#88e8fb]">
+              # 建構模組化架構 <br />
+              <span className="text-sm text-[#fff]">
+                設計共用元件以提升開發效率並降低維護成本
+              </span>
+            </p>
+
+            <p className="text-base leading-[150%] my-4 pr-[68px] pl-3 font-bold text-[#88e8fb]">
+              # App跨平台開發Flutter實作經驗 <br />
+              <span className="text-sm text-[#fff]">
+                畫面切版以及 FCM 推播與 OAuth 第三方登入功能開發
+              </span>
+            </p>
+
+            <hr className="border-gray-400 my-4 w-[90%]" />
+
             {frontEndArticle.content.map((item, index) => (
-              <div key={`${item.subtitle}-${index}`} className="pr-[68px] pl-3">
-                <h2 className="text-sm leading-[200%] text-[#93e8f9]">
+              <div
+                key={`${item.subtitle}-${index}`}
+                className="pr-[68px] pl-3 mb-4"
+              >
+                <h2 className="text-xs leading-[100%] text-[#e1e7ea] ">
                   {item.subtitle}
                 </h2>
-                <p className="text-sm leading-[150%] text-[#f9bc70]">
+                <p className="text-sm leading-[150%] text-[#f6e1c8] font-bold">
                   {item.content}
                 </p>
               </div>
@@ -188,18 +209,30 @@ const MobileLayout = () => {
               className="w-[calc(100%-68px)] ml-[68px]"
             />
 
-            <p className="text-sm leading-[200%] mt-5 mb-2 px-[68px]">
-              具前後端整合經驗 <br />
-              協作梳理業務邏輯，開發電商平台API <br />
-              如會員註冊與登入及商品資料。
+            <p className="text-base leading-[150%] my-4 px-[68px] font-bold text-[#fe92bb]">
+              # 後端架構 <br />
+              <span className="text-sm text-[#fff]">
+                整合 Supabase、Deno Oak 與 Drizzle
+                ORM，建立高遷移彈性與型別安全的 API 服務
+              </span>
             </p>
 
+            <p className="text-base leading-[150%] my-4 px-[68px] font-bold text-[#fe92bb]">
+              # 安全與優化 <br />
+              <span className="text-sm text-[#fff]">
+                實作 RLS 權限控管與 RSA+AES 混合加密，並透過 Redis
+                緩存機制降低資料庫負載與查詢延遲。
+              </span>
+            </p>
+
+            <hr className="border-gray-400 mx-[68px] my-4 w-[90%]" />
+
             {BackEndArticle.content.map((item, index) => (
-              <div key={`${item.subtitle}-${index}`} className="px-[68px]">
-                <h2 className="text-sm leading-[200%] text-[#23bcdf]">
+              <div key={`${item.subtitle}-${index}`} className="px-[68px] mb-4">
+                <h2 className="text-sm leading-[100%] text-[#e1e7ea] font-bold ">
                   {item.subtitle}
                 </h2>
-                <p className="text-sm leading-[150%] text-[#c19663]">
+                <p className="text-xs leading-[150%] text-[#f6e1c8] ">
                   {item.content}
                 </p>
               </div>
@@ -244,18 +277,203 @@ const MobileLayout = () => {
               />
             </div>
 
-            <p className="text-sm leading-[200%] mt-5 px-[68px]">
-              多元專案經歷，遊戲平台、B2B/B2C多語系電商平台、平台內部後台系統、一頁式活動頁、EDM。
+            <p className="text-base leading-[200%] mt-5 px-[68px]">
+              專案經歷：遊戲部落格、B2B/B2C多語系電商平台、平台內部後台系統、一頁式活動頁、EDM。
             </p>
           </article>
 
-          <article className=" p-[20px] flex flex-col gap-5 text-slate-200 text-3xl font-semibold tracking-wide h-full overflow-scroll hidden-scrollbar">
-            <img src="./images/ec.png" className=" m-auto z-20" />
-            <img src="./images/db.png" className=" m-auto z-20" />
-            <img src="./images/gp.png" className=" m-auto z-20" />
-            <img src="./images/lp.png" className=" m-auto z-20" />
-            <img src="./images/edm.png" className=" m-auto z-20" />
-          </article>
+          <section className="z-20 p-[20px] flex flex-col gap-5 text-slate-200 text-3xl font-semibold tracking-wide h-full overflow-scroll hidden-scrollbar">
+            {/* 電商平台 */}
+            <article>
+              <img src="./images/ec.png" className=" m-auto z-20" />
+              <div className="flex flex-col gap-5 text-sm text-[#faf4ec]">
+                <h3 className="text-base font-bold mt-3">
+                  電商平台 ( Next.js 14、Flutter、SWR、i18next)
+                </h3>
+
+                <ul className="list-disc list-inside gap-4 flex flex-col mb-10">
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      大量數據加載：
+                    </span>
+                    <p className="ml-4">
+                      運用useSWRInfinite
+                      處理分頁請求並搭配視窗邊界偵測API，實作捲動載入，提升用戶瀏覽的體驗。
+                    </p>
+                  </li>
+
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      即時通訊開發：
+                    </span>
+                    <p className="ml-4">
+                      整合 Firebase
+                      Realtime服務並優化訂閱生命週期，以減少不必要的後端連線。
+                    </p>
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      第三方登入整合：
+                    </span>
+                    <p className="ml-4">
+                      處理OAuth授權碼流程與Token管理，提升用戶註冊率，並確保身分驗證流程安全。
+                    </p>
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      物流地圖整合：
+                    </span>
+                    <p className="ml-4">
+                      透過 Next.js API
+                      Routes串接便利商店選店服務，實作後端API代理以安全處理金鑰與參數。
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </article>
+
+            {/* 後台系統*/}
+            <article>
+              <img src="./images/db.png" className=" m-auto z-20" />
+              <div className="flex flex-col gap-5 text-sm text-[#faf4ec]">
+                <h3 className="text-base font-bold mt-3">
+                  後台管理系統 ( React、Ant-Design 、TanStack Query、i18next)
+                </h3>
+
+                <ul className="list-disc list-inside gap-4 flex flex-col mb-10">
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      數據視覺化 :
+                    </span>
+                    <p className="ml-4">
+                      運用 React-tree-graph
+                      <br />
+                      實作動態樹狀圖，呈現複雜的層級組織結構。
+                    </p>
+                  </li>
+
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      功能開發與優化：
+                    </span>
+                    <p className="ml-4">
+                      實作報表生成、文件匯出與拖拽排序等複雜功能，
+                      <br />
+                      並透過 Custom Hooks
+                      將業務邏輯與畫面分離，提升組件複用性與系統維護性。
+                    </p>
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      存取權限控管：
+                    </span>
+                    <p className="ml-4">
+                      運用 OutletContext
+                      <br />
+                      實現跨路由權限驗證狀態同步，確保頁面訪問的安全性。
+                    </p>
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      數據檢索：
+                    </span>
+                    <p className="ml-4">
+                      整合多重篩選與關鍵字搜尋功能，優化數據檢索體驗。
+                    </p>
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      組件開發：
+                    </span>
+                    <p className="ml-4">
+                      基於 React-quill 客製化 WYSIWYG
+                      編輯器組件，提升編輯靈活性。
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </article>
+
+            {/* 遊戲部落格*/}
+            <article>
+              <img
+                src="./images/gp.png"
+                className=" m-auto z-20 w-full h-[45dvh] object-cover"
+              />
+              <div className="flex flex-col gap-5 text-sm text-[#faf4ec]">
+                <h3 className="text-base font-bold mt-3">
+                  遊戲部落格 (React 、i18n)
+                </h3>
+
+                <ul className="list-disc list-inside gap-4 flex flex-col mb-10">
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      動畫效果 :
+                    </span>
+                    淡入淡出、序列式滑動
+                  </li>
+
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">RWD切版：</span>
+                    適應跨裝置（PC/Tablet/Mobile）
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      LINE 整合：
+                    </span>
+                    串接 LINE LIFF SDK 實現自動登入與資料同步
+                  </li>
+                </ul>
+              </div>
+            </article>
+
+            {/* 一頁式廣告*/}
+            <article>
+              <img
+                src="./images/lp.png"
+                className=" m-auto z-20 w-full h-[45dvh] object-cover"
+              />
+              <div className="flex flex-col gap-5 text-sm text-[#faf4ec]">
+                <h3 className="text-base font-bold mt-3">
+                  一頁式廣告 (Next、Mono-Repo(Lerna))
+                </h3>
+
+                <ul className="list-disc list-inside gap-4 flex flex-col mb-10">
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      針對頻繁的行銷活動需求，將落地頁拆解為可配置的共用元件與模組版型，提高後續開發效率
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </article>
+
+            {/* EDM*/}
+            <article>
+              <img
+                src="./images/edm.png"
+                className=" m-auto z-20 w-full h-[45dvh] object-cover"
+              />
+              <div className="flex flex-col gap-5 text-sm text-[#faf4ec]">
+                <h3 className="text-base font-bold mt-3">
+                  EDM (HTML table、inline CSS)
+                </h3>
+
+                <ul className="list-disc list-inside gap-4 flex flex-col mb-10">
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      負責多樣化 EDM 模組之開發與維護
+                    </span>
+                  </li>
+                  <li className="hover:text-amber-100 transition-all duration-300">
+                    <span className="font-bold text-green-100 ">
+                      研究各類郵件客戶端渲染機制以提供跨裝置解決方案並建置模板，提升團隊開發效率
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </article>
+          </section>
 
           <div className="w-full flex flex-col justify-center items-center sticky bottom-2">
             <p className="font-semibold opacity-80 text-[56px] ">Project</p>
